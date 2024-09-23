@@ -1,38 +1,67 @@
 # gibberle
 
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## Setup Instructions
 
-## Getting Started
+1. **Install Python 3.12 or newer**:
 
-First, run the development server:
+   - Download and install Python from the [official Python website](https://www.python.org/downloads/).
+   - Ensure to check the option to **'Add Python to PATH'** during installation. (Don't mess this up, man!)
+
+2. **Clone the Repository and Create a Virtual Environment**:
+
+   - Skipping the cloning step here; y'all got it.
+
+   - Create a virtual environment:
+     ```bash
+     python -m venv venv
+     ```
+
+3. **Activate the Virtual Environment**:
+
+   - **For Windows**:
+
+     ```bash
+     .\venv\Scripts\activate
+     ```
+
+   - **For Linux/macOS**:
+     ```bash
+     source venv/bin/activate
+     ```
+
+   Remember, you'll need to activate the virtual environment each time you open a new terminal session.
+
+4. **Install Dependencies**:
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+## Jupyter Notebook
+
+### Running Jupyter Notebook
+
+To start Jupyter Notebook, run:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+jupyter notebook
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Web App (Next.js)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm i
+# and
+npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## VS Code Extensions [WIP]
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Auto Close Tag - Jun Han
+ESLint - Microsoft
+Jupyter - Microsoft
+MDX - unified
+MDX Preview - Xiaoyi Chen
+Prettier - Prettier
+Python - Microsoft
+Thunder Client - Thunder Client
