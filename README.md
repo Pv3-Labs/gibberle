@@ -50,6 +50,8 @@ jupyter notebook
 ## Web App (Next.js)
 
 ```bash
+cd web-app
+# and
 npm i
 # and
 npm run dev
