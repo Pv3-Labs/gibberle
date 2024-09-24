@@ -59,11 +59,11 @@ npm run dev
 
 ## VS Code Extensions [WIP]
 
-Auto Close Tag - Jun Han
-ESLint - Microsoft
-Jupyter - Microsoft
-MDX - unified
-MDX Preview - Xiaoyi Chen
-Prettier - Prettier
-Python - Microsoft
-Thunder Client - Thunder Client
+- Auto Close Tag - Jun Han
+- ESLint - Microsoft
+- Jupyter - Microsoft
+- MDX - unified
+- MDX Preview - Xiaoyi Chen
+- Prettier - Prettier
+- Python - Microsoft
+- Thunder Client - Thunder Client
