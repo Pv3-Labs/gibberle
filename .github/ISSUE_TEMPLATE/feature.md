@@ -19,3 +19,7 @@ assignees: ''
 ## Dev Notes
 [Include "need to knows", resources, images, and/or additional notes here that may be useful for whoever picks up this ticket.]
 - [e.g. Figma Design link or image here if relevant]
+
+## Subtasks
+- [ ] Subtask 1
+- [ ] Subtask 2
