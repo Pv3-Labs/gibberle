@@ -16,10 +16,12 @@
 
 6. Exceptions are handled and communicated properly (catch block, throw exception, descriptive logs)
 
-7. Justify if a class/method is as many LOC as it needs to be.
+7. Justify if a class/method is as many LOC (lines of code) as it needs to be.
 
 8. Gauge the validity of your types, use dynamic/complex types as needed.
 
 9. Scope of access should be as restrictive as possible.
 
 10. Follow OOP, break big problems into smaller, simpler ones. Design methods/classes with this in mind.
+
+You are the last line of defense.
