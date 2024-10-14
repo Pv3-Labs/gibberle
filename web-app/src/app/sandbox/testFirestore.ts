@@ -1,27 +1,22 @@
-// Import necessary Firestore functions
-import { addDoc, collection } from "firebase/firestore";
-import { db } from './firebase'; // Adjust the import based on your structure
+// sandbox/testFirestore.ts
+import { addDoc, collection } from 'firebase/firestore'; // Import Firestore methods
+import { db } from './firebase'; // Import the Firestore instance
 
-// Function to add a document to the 'testing' collection
-async function addTestDocument() {
-    try {
-        // Reference to the 'testing' collection
-        const testCollectionRef = collection(db, "test");
+export const testFirestore = async () => {
+  try {
+    // Define the data you want to add to the 'test' collection
+    const testData = {
+      name: 'Test Document',
+      createdAt: new Date(),
+    };
 
-        // Document data you want to add
-        const newDocData = {
-            name: "Test Document",
-            description: "This is a test document.",
-            createdAt: new Date(),
-        };
+    // Reference the 'test' collection
+    const testCollectionRef = collection(db, 'test');
 
-        // Add document to the collection
-        const docRef = await addDoc(testCollectionRef, newDocData);
-        console.log("Document added with ID: ", docRef.id);
-    } catch (e) {
-        console.error("Error adding document: ", e);
-    }
-}
-
-// Call the function to add the document
-addTestDocument();
+    // Add a new document with the data
+    const docRef = await addDoc(testCollectionRef, testData);
+    console.log('Document written with ID: ', docRef.id);
+  } catch (error) {
+    console.error('Firestore error:', error);
+  }
+};

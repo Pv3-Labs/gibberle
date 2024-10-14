@@ -1,12 +1,7 @@
-// Import the functions you need from the SDKs you need
-import { Analytics, getAnalytics } from "firebase/analytics";
-import { initializeApp } from "firebase/app";
-import { Auth, getAuth } from "firebase/auth";
-import { Firestore, getFirestore } from "firebase/firestore";
-// import { getMessaging, Messaging } from "firebase/messaging";
-// import { FirebaseStorage, getStorage } from "firebase/storage";
+// sandbox/firebase.ts
+import { initializeApp } from 'firebase/app';
+import { getFirestore } from 'firebase/firestore';
 
-// Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyBbgM3EjWKo_1FM_j5-X_Xk45Iy2-yNqEc",
   authDomain: "pv3-gibberle.firebaseapp.com",
@@ -17,13 +12,10 @@ const firebaseConfig = {
   measurementId: "G-8MLEH3DDB4"
 };
 
+
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const analytics: Analytics = getAnalytics(app);
+const db = getFirestore(app);
 
-// Export Firebase services
-export const auth: Auth = getAuth(app);
-export const db: Firestore = getFirestore(app);
-export const firebaseApp = app; // Optionally export the app instance.
-// export const storage: FirebaseStorage = getStorage(app);
-// export const messaging: Messaging = getMessaging(app);
+export { db };
+
