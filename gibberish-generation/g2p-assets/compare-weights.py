@@ -95,10 +95,10 @@ def compare_checkpoints(checkpoint1_path, checkpoint2_path, subset_size=10000):
     test_dataset = load_hf_dataset(subset_size)
 
     # Evaluate both models
-    print(f"Evaluating current weights from {checkpoint1_path}:")
+    print(f"Evaluating current weights from {checkpoint1_path}")
     accuracy1, edit_distance1 = evaluate_model(model1, test_dataset)
 
-    print(f"Evaluating new weights from {checkpoint2_path}:")
+    print(f"Evaluating new weights from {checkpoint2_path}")
     accuracy2, edit_distance2 = evaluate_model(model2, test_dataset)
 
     # Print results and comparison
@@ -106,11 +106,11 @@ def compare_checkpoints(checkpoint1_path, checkpoint2_path, subset_size=10000):
     print(f"New weights - Phoneme-level Accuracy: {accuracy2 * 100:.2f}%, Average Edit Distance: {edit_distance2:.2f}")
 
     if accuracy1 > accuracy2:
-        print("Current weights perform better.")
+        print("Current weights have a higher phoneme-level accuracy.")
     elif accuracy2 > accuracy1:
-        print("New weights perform better.")
+        print("New weights have a higher phoneme-level accuracy.")
     else:
-        print("Both weights have the same accuracy.")
+        print("Both weights have the same phoneme-level accuracy.")
 
     if edit_distance1 < edit_distance2:
         print("Current weights have a smaller edit distance (better performance).")

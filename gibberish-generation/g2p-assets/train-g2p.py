@@ -277,8 +277,8 @@ if __name__ == '__main__':
         if val_loss < best_val_loss:
             best_val_loss = val_loss
             epochs_no_improve = 0  # Reset the counter if the validation loss improved
-            best_checkpoint_file = os.path.join(os.path.dirname(__file__), 'new-training-best-checkpoint.pt')
-            torch.save(g2p_model.state_dict(), best_checkpoint_file)
+            checkpoint_file = os.path.join(os.path.dirname(__file__), 'new-checkpoint.pt')
+            torch.save(g2p_model.state_dict(), checkpoint_file)
         else:
             epochs_no_improve += 1
             print(f"Early stopping counter: {epochs_no_improve}/{patience}")
