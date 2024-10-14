@@ -73,6 +73,8 @@ class G2P(nn.Module):
         embedding_dim = 128
         # Hidden state size for GRUs (RNN units).
         hidden_size = 256
+        # Dropout rate
+        dropout_rate = 0.5
 
         # Embedding for input graphemes
         self.enc_emb = nn.Embedding(len(self.graphemes), embedding_dim)
@@ -87,18 +89,23 @@ class G2P(nn.Module):
         # Fully connected layer to map hidden states to phonemes
         self.fc = nn.Linear(hidden_size, len(self.phonemes))
 
+        # Dropout layers
+        self.dropout = nn.Dropout(p=dropout_rate)
+
         # Load pre-trained variables
         self.load_variables()
 
         # Heteronym dictionary
         self.heteronym2features = construct_heteronym_dictionary()
 
-    def load_variables(self):
+    def load_variables(self, checkpoint_path=None):
         """
         Loads the pre-trained model parameters.
         """
-        checkpoint = torch.load(os.path.join(
-            dirname, 'g2p-assets', 'checkpoint.pt'), map_location='cpu', weights_only=True)
+        if checkpoint_path == None:
+            checkpoint = torch.load(os.path.join(dirname, 'g2p-assets', 'model-checkpoint.pt'), map_location='cpu', weights_only=True)
+        else:
+            checkpoint = torch.load(checkpoint_path, map_location='cpu', weights_only=True)
 
         # Load parameters into encoder layers
         self.enc_emb.weight.data.copy_(checkpoint['enc_emb.weight'])
@@ -125,6 +132,8 @@ class G2P(nn.Module):
         """
         # Convert input graphemes into embeddings
         embedded = self.enc_emb(x)
+        # Apply dropout to the embeddings
+        embedded = self.dropout(embedded)
         # Passing embeddings through the GRU to get the hidden state
         _, hidden = self.enc_gru(embedded)
         return hidden
@@ -153,6 +162,8 @@ class G2P(nn.Module):
         for _ in range(max_length):
             # Embed the current decoder input
             embedded = self.dec_emb(decoder_input)
+            # Apply dropout to the decoder embedding
+            embedded = self.dropout(embedded)
             # Pass through the decoder GRU
             output, hidden = self.dec_gru(embedded, hidden)
             # Pass the output through the fully connected layer

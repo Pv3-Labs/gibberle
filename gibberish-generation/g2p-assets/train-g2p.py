@@ -153,7 +153,7 @@ if __name__ == '__main__':
 
     # Define the loss function and optimizer
     criterion = nn.CrossEntropyLoss(ignore_index=g2p_model.p2idx["<pad>"])
-    optimizer = torch.optim.Adam(g2p_model.parameters(), lr=0.001)
+    optimizer = torch.optim.Adam(g2p_model.parameters(), lr=0.001, weight_decay=1e-5)
 
     # Mixed precision training setup
     scaler = GradScaler()
@@ -162,25 +162,35 @@ if __name__ == '__main__':
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     g2p_model.to(device)
 
-    # Training loop with optimizations for mixed precision and gradient accumulation
-    num_epochs = 50
+    num_epochs = 15  # Number of epochs
     accumulation_steps = 4  # Number of batches for gradient accumulation
+    best_val_loss = float('inf')  # Lowest validation loss
+    patience = 5  # Number of epochs to wait for improvement
+    epochs_without_improvement = 0  # Number of epochs without improvement
 
+    # Training loop with optimizations for mixed precision and gradient accumulation
     for epoch in range(num_epochs):
         g2p_model.train()  # Set model to training mode
         total_loss = 0
 
         # Exponential decay for teacher forcing probability
-        # Decreases exponentially from 0.9
         p_teacher_forcing = 0.9 * (0.85 ** epoch)
 
         # Iterate over training batches
         for i, batch in enumerate(tqdm(train_loader, desc=f"Training Epoch {epoch+1}/{num_epochs}")):
-            input_ids = batch['input_ids'].to(
-                device)  # Move input IDs to device
+            input_ids = batch['input_ids'].to(device)  # Move input IDs to device
             labels = batch['labels'].to(device)  # Move labels to device
-
             batch_size = input_ids.size(0)
+
+            # Apply noise to input_ids during training
+            def add_noise_to_input(input_ids, noise_factor=0.1):
+                noisy_input = input_ids.clone()
+                mask = torch.rand(noisy_input.shape) < noise_factor  # Randomly choose elements to replace
+                noisy_input[mask] = g2p_model.g2idx["<unk>"]  # Replace some characters with <unk>
+                return noisy_input
+        
+            # Apply noise to input_ids
+            noisy_input_ids = add_noise_to_input(input_ids)
 
             # Zero the gradients only at the start of each accumulation step
             if i % accumulation_steps == 0:
@@ -189,7 +199,7 @@ if __name__ == '__main__':
             # Forward pass through the model using mixed precision with autocast
             with autocast(device_type='cuda' if torch.cuda.is_available() else 'cpu'):
                 # Forward pass through the encoder
-                encoder_hidden = g2p_model.forward(input_ids)
+                encoder_hidden = g2p_model.forward(noisy_input_ids)
 
                 # Decide whether to use teacher forcing for this batch
                 use_teacher_forcing = random.random() < p_teacher_forcing
@@ -203,8 +213,7 @@ if __name__ == '__main__':
                     decoder_embedded = g2p_model.dec_emb(decoder_inputs)
 
                     # Run the decoder over the entire sequence
-                    outputs, _ = g2p_model.dec_gru(
-                        decoder_embedded, encoder_hidden)
+                    outputs, _ = g2p_model.dec_gru(decoder_embedded, encoder_hidden)
 
                     # Get phoneme prediction logits from the fully connected layer
                     logits = g2p_model.fc(outputs)
@@ -218,15 +227,13 @@ if __name__ == '__main__':
                     loss = loss / accumulation_steps  # Scale loss by the accumulation steps
                 else:
                     # No teacher forcing: use the model's own predictions as the next input
-                    decoder_input = torch.full(
-                        (batch_size, 1), g2p_model.p2idx["<s>"], dtype=torch.long).to(device)
+                    decoder_input = torch.full((batch_size, 1), g2p_model.p2idx["<s>"], dtype=torch.long).to(device)
                     output_logits = []
 
                     for t in range(labels.size(1) - 1):
                         decoder_embedded = g2p_model.dec_emb(decoder_input)
 
-                        output, encoder_hidden = g2p_model.dec_gru(
-                            decoder_embedded, encoder_hidden)
+                        output, encoder_hidden = g2p_model.dec_gru(decoder_embedded, encoder_hidden)
 
                         logits = g2p_model.fc(output)
                         output_logits.append(logits)
@@ -236,8 +243,7 @@ if __name__ == '__main__':
                         decoder_input = predicted_token
 
                     output_logits = torch.cat(output_logits, dim=1)
-                    logits_flat = output_logits.view(-1,
-                                                     output_logits.size(-1))
+                    logits_flat = output_logits.view(-1,output_logits.size(-1))
                     decoder_target_ids = labels[:, 1:].reshape(-1)
 
                     loss = criterion(logits_flat, decoder_target_ids)
@@ -250,8 +256,7 @@ if __name__ == '__main__':
             if (i + 1) % accumulation_steps == 0:
                 # Apply gradient clipping to prevent exploding gradients
                 scaler.unscale_(optimizer)
-                torch.nn.utils.clip_grad_norm_(
-                    g2p_model.parameters(), max_norm=1.0)
+                torch.nn.utils.clip_grad_norm_(g2p_model.parameters(), max_norm=1.0)
                 # Step the optimizer and update gradients
                 scaler.step(optimizer)
                 scaler.update()
@@ -268,7 +273,22 @@ if __name__ == '__main__':
         val_loss = evaluate(g2p_model, valid_loader)
         print(f"Validation Loss: {val_loss:.4f}")
 
+        # Early stopping
+        if val_loss < best_val_loss:
+            best_val_loss = val_loss
+            epochs_no_improve = 0  # Reset the counter if the validation loss improved
+            best_checkpoint_file = os.path.join(os.path.dirname(__file__), 'new-training-best-checkpoint.pt')
+            torch.save(g2p_model.state_dict(), best_checkpoint_file)
+        else:
+            epochs_no_improve += 1
+            print(f"Early stopping counter: {epochs_no_improve}/{patience}")
+
+        # If the counter exceeds patience, stop training
+        if epochs_no_improve >= patience:
+            print("Early stopping triggered.")
+            break
+
     # Save the trained model's state_dict to a checkpoint file
-    checkpoint_file = os.path.join(os.path.dirname(__file__), 'checkpoint.pt')
+    final_checkpoint_file = os.path.join(os.path.dirname(__file__), 'new-training-final-checkpoint.pt')
     # Changed to saving the entire model state_dict instead of individual parameters
-    torch.save(g2p_model.state_dict(), checkpoint_file)
+    torch.save(g2p_model.state_dict(), final_checkpoint_file)
