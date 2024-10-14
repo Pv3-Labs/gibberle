@@ -157,7 +157,7 @@ class G2P(nn.Module):
         # List to store predicted phonemes
         preds = []
         # Max sequence length
-        max_length = 20
+        max_length = 50
 
         for _ in range(max_length):
             # Embed the current decoder input
