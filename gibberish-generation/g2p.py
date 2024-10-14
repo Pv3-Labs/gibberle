@@ -74,7 +74,7 @@ class G2P(nn.Module):
         # Hidden state size for GRUs (RNN units).
         hidden_size = 256
         # Dropout rate
-        dropout_rate = 0.2
+        dropout_rate = 0.5
 
         # Embedding for input graphemes
         self.enc_emb = nn.Embedding(len(self.graphemes), embedding_dim)

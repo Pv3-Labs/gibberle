@@ -146,9 +146,9 @@ if __name__ == '__main__':
         preprocess_function, batched=True, remove_columns=['text'])
 
     # Create DataLoaders for training and validation datasets with optimizations:
-    train_loader = DataLoader(tokenized_datasets['train'], batch_size=64, shuffle=True,
+    train_loader = DataLoader(tokenized_datasets['train'], batch_size=96, shuffle=True,
                               collate_fn=collate_batch, pin_memory=True)
-    valid_loader = DataLoader(tokenized_datasets['test'], batch_size=64, shuffle=False,
+    valid_loader = DataLoader(tokenized_datasets['test'], batch_size=96, shuffle=False,
                               collate_fn=collate_batch, pin_memory=True)
 
     # Define the loss function and optimizer

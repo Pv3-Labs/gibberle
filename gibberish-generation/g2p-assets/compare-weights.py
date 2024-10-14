@@ -11,17 +11,14 @@ from tqdm import tqdm
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from g2p import G2P
 
-generated_seed = random.randint(0, 10000)
-print(f"Generated Seed: {generated_seed}")
-debug = False
 
 # Load the G2P dataset from Hugging Face
-def load_hf_dataset(subset_size=10000):
+def load_hf_dataset(subset_size=10000, seed=0):
     dataset = load_dataset('s3prl/g2p')
     test_dataset = dataset['train']
 
     # Shuffle and take a subset of the dataset (e.g., 10k examples)
-    subset = test_dataset.shuffle(seed=generated_seed).select(range(subset_size))
+    subset = test_dataset.shuffle(seed=seed).select(range(subset_size))
     
     # Prepare the data in a suitable format (graphemes, phonemes pairs)
     test_samples = [(item['text'].split()[0], " ".join(item['text'].split()[1:])) for item in subset]
@@ -35,7 +32,7 @@ def clean_sequence(sequence, special_tokens):
     return [token for token in sequence if token not in special_tokens]
 
 # Function to evaluate the model with phoneme-level accuracy and edit distance
-def evaluate_model(model, test_dataset):
+def evaluate_model(model, test_dataset, debug=False):
     model.eval() 
     total_phoneme_count = 0
     correct_phoneme_count = 0
@@ -81,49 +78,59 @@ def evaluate_model(model, test_dataset):
 def load_g2p_model(checkpoint_path):
     model = G2P()  # Instantiate the G2P model
     model.load_variables(checkpoint_path=checkpoint_path)  # Load weights from the checkpoint
-    print(f"Weights loaded from {checkpoint_path}.")
+    print(f"Weights loaded from {checkpoint_path}")
     return model
 
-
-# Compare the performance of two checkpoints
-def compare_checkpoints(checkpoint1_path, checkpoint2_path, subset_size=10000):
-    # Load both models with their respective checkpoints
-    model1 = load_g2p_model(checkpoint1_path)
-    model2 = load_g2p_model(checkpoint2_path)
+# Function to evaluate a single checkpoint
+def evaluate_checkpoint(checkpoint_path, subset_size=10000, seed=0, debug=False):
+    # Load the model with the specified checkpoint
+    model = load_g2p_model(checkpoint_path)
 
     # Load a subset of the dataset
-    test_dataset = load_hf_dataset(subset_size)
+    test_dataset = load_hf_dataset(subset_size, seed)
 
-    # Evaluate both models
-    print(f"Evaluating current weights from {checkpoint1_path}")
-    accuracy1, edit_distance1 = evaluate_model(model1, test_dataset)
+    # Evaluate the model
+    accuracy, edit_distance = evaluate_model(model, test_dataset, debug)
 
-    print(f"Evaluating new weights from {checkpoint2_path}")
-    accuracy2, edit_distance2 = evaluate_model(model2, test_dataset)
+    # Print results
+    print(f"Phoneme-level Accuracy: {accuracy * 100:.2f}%, Average Edit Distance: {edit_distance:.2f}")
 
-    # Print results and comparison
-    print(f"Current weights - Phoneme-level Accuracy: {accuracy1 * 100:.2f}%, Average Edit Distance: {edit_distance1:.2f}")
-    print(f"New weights - Phoneme-level Accuracy: {accuracy2 * 100:.2f}%, Average Edit Distance: {edit_distance2:.2f}")
+# Compare the performance of two checkpoints (optional)
+def compare_checkpoints(checkpoint1_path, checkpoint2_path, subset_size=10000, seed=0, debug=False):
+    # Evaluate the first checkpoint
+    print(f"Evaluating weights from {checkpoint1_path}")
+    accuracy1, edit_distance1 = evaluate_checkpoint(checkpoint1_path, subset_size, seed, debug)
 
+    # Evaluate the second checkpoint
+    print(f"Evaluating weights from {checkpoint2_path}")
+    accuracy2, edit_distance2 = evaluate_checkpoint(checkpoint2_path, subset_size, seed, debug)
+
+    # Print comparison results
     if accuracy1 > accuracy2:
-        print("Current weights have a higher phoneme-level accuracy.")
+        print("First checkpoint has a higher phoneme-level accuracy.")
     elif accuracy2 > accuracy1:
-        print("New weights have a higher phoneme-level accuracy.")
+        print("Second checkpoint has a higher phoneme-level accuracy.")
     else:
-        print("Both weights have the same phoneme-level accuracy.")
+        print("Both checkpoints have the same phoneme-level accuracy.")
 
     if edit_distance1 < edit_distance2:
-        print("Current weights have a smaller edit distance (better performance).")
+        print("First checkpoint has a smaller edit distance (better performance).")
     elif edit_distance2 < edit_distance1:
-        print("New weights have a smaller edit distance (better performance).")
+        print("Second checkpoint has a smaller edit distance (better performance).")
     else:
-        print("Both weights have the same average edit distance.")
+        print("Both checkpoints have the same average edit distance.")
 
-# Main function to call comparison
+# Main function to evaluate one or two checkpoints
 if __name__ == "__main__":
+    # Seed generation and debug mode moved to main
+    generated_seed = random.randint(0, 10000)
+    # generated_seed = 384
+    print(f"Generated Seed: {generated_seed}")
+    debug = False  
+
     dirname = os.path.dirname(__file__)
     model_checkpoint = os.path.join(dirname, 'model-checkpoint.pt')
     new_checkpoint = os.path.join(dirname, 'new-checkpoint.pt')
 
-    # Compare both checkpoints using a subset of 10,000 samples
-    compare_checkpoints(model_checkpoint, new_checkpoint, subset_size=10000)
+    evaluate_checkpoint(model_checkpoint, subset_size=10000, seed=generated_seed, debug=debug)
+    # compare_checkpoints(model_checkpoint, new_checkpoint, subset_size=10000, seed=generated_seed, debug=debug)
