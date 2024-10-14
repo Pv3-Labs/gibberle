@@ -15,6 +15,7 @@ nlp = spacy.load('en_core_web_sm')
 # Get the directory of current file
 dirname = os.path.dirname(__file__)
 
+
 # Function to construct a dictionary of heteronyms
 def construct_heteronym_dictionary():
     """
@@ -28,9 +29,11 @@ def construct_heteronym_dictionary():
             if line.startswith("#") or not line.strip():
                 continue  # Skip comments and empty lines
             headword, pron1, pron2, pos1 = line.strip().split("|")
-            heteronym2features[headword.lower()] = (pron1.split(), pron2.split(), pos1)
+            heteronym2features[headword.lower()] = (
+                pron1.split(), pron2.split(), pos1)
 
     return heteronym2features
+
 
 # G2P model using PyTorch
 class G2P(nn.Module):
@@ -38,13 +41,14 @@ class G2P(nn.Module):
         """
         Initializes the G2P model.
         """
-        super(G2P, self).__init__() # Required for PyTorch models
+        super(G2P, self).__init__()  # Required for PyTorch models
 
-        # List of graphemes including special tokens for padding, unknown, 
+        # List of graphemes including special tokens for padding, unknown,
         # and end of sequence, respectively
-        self.graphemes = ["<pad>", "<unk>", "</s>"] + list("abcdefghijklmnopqrstuvwxyz")
+        self.graphemes = ["<pad>", "<unk>", "</s>"] + \
+            list("abcdefghijklmnopqrstuvwxyz")
 
-        # List of phonemes including special tokens for padding, unknown, 
+        # List of phonemes including special tokens for padding, unknown,
         # start of sequence, and end of sequence, respectively
         self.phonemes = ["<pad>", "<unk>", "<s>", "</s>"] + [
             'AA0', 'AA1', 'AA2', 'AE0', 'AE1', 'AE2', 'AH0', 'AH1', 'AH2',
@@ -66,9 +70,9 @@ class G2P(nn.Module):
         self.idx2p = {idx: p for idx, p in enumerate(self.phonemes)}
 
         # Embedding dimension for graphemes and phonemes.
-        embedding_dim = 128 
+        embedding_dim = 128
         # Hidden state size for GRUs (RNN units).
-        hidden_size = 256 
+        hidden_size = 256
 
         # Embedding for input graphemes
         self.enc_emb = nn.Embedding(len(self.graphemes), embedding_dim)
@@ -93,25 +97,27 @@ class G2P(nn.Module):
         """
         Loads the pre-trained model parameters.
         """
-        checkpoint = torch.load(os.path.join(dirname, 'g2p-assets', 'checkpoint.pt'), map_location='cpu', weights_only=True)
+        checkpoint = torch.load(os.path.join(
+            dirname, 'g2p-assets', 'checkpoint.pt'), map_location='cpu', weights_only=True)
 
         # Load parameters into encoder layers
-        self.enc_emb.weight.data.copy_(checkpoint['enc_emb'])
-        self.enc_gru.weight_ih_l0.data.copy_(checkpoint['enc_gru_weight_ih_l0'])
-        self.enc_gru.weight_hh_l0.data.copy_(checkpoint['enc_gru_weight_hh_l0'])
-        self.enc_gru.bias_ih_l0.data.copy_(checkpoint['enc_gru_bias_ih_l0'])
-        self.enc_gru.bias_hh_l0.data.copy_(checkpoint['enc_gru_bias_hh_l0'])
+        self.enc_emb.weight.data.copy_(checkpoint['enc_emb.weight'])
+        self.enc_gru.weight_ih_l0.data.copy_(checkpoint['enc_gru.weight_ih_l0'])
+        self.enc_gru.weight_hh_l0.data.copy_(checkpoint['enc_gru.weight_hh_l0'])
+        self.enc_gru.bias_ih_l0.data.copy_(checkpoint['enc_gru.bias_ih_l0'])
+        self.enc_gru.bias_hh_l0.data.copy_(checkpoint['enc_gru.bias_hh_l0'])
 
         # Load parameters into decoder layers
-        self.dec_emb.weight.data.copy_(checkpoint['dec_emb'])
-        self.dec_gru.weight_ih_l0.data.copy_(checkpoint['dec_gru_weight_ih_l0'])
-        self.dec_gru.weight_hh_l0.data.copy_(checkpoint['dec_gru_weight_hh_l0'])
-        self.dec_gru.bias_ih_l0.data.copy_(checkpoint['dec_gru_bias_ih_l0'])
-        self.dec_gru.bias_hh_l0.data.copy_(checkpoint['dec_gru_bias_hh_l0'])
+        self.dec_emb.weight.data.copy_(checkpoint['dec_emb.weight'])
+        self.dec_gru.weight_ih_l0.data.copy_(checkpoint['dec_gru.weight_ih_l0'])
+        self.dec_gru.weight_hh_l0.data.copy_(checkpoint['dec_gru.weight_hh_l0'])
+        self.dec_gru.bias_ih_l0.data.copy_(checkpoint['dec_gru.bias_ih_l0'])
+        self.dec_gru.bias_hh_l0.data.copy_(checkpoint['dec_gru.bias_hh_l0'])
+
 
         # Load parameters for the fully connected layer
-        self.fc.weight.data.copy_(checkpoint['fc_weight'])
-        self.fc.bias.data.copy_(checkpoint['fc_bias'])
+        self.fc.weight.data.copy_(checkpoint['fc.weight'])
+        self.fc.bias.data.copy_(checkpoint['fc.bias'])
 
     def forward(self, x):
         """
@@ -122,42 +128,46 @@ class G2P(nn.Module):
         # Passing embeddings through the GRU to get the hidden state
         _, hidden = self.enc_gru(embedded)
         return hidden
-    
+
     def predict(self, word):
-      """
-      Predicts the phoneme sequence for a given word.
-      """
-      # Convert the word into a list of characters and end of sequence token
-      chars = list(word) + ["</s>"]
-      # Map characters to their corresponding indices
-      x = [self.g2idx.get(char, self.g2idx["<unk>"]) for char in chars]
-      # Convert to a tensor and add batch dimension
-      x = torch.tensor(x).unsqueeze(0)
+        """
+        Predicts the phoneme sequence for a given word.
+        """
+        # Convert the word into a list of characters and end of sequence token
+        chars = list(word) + ["</s>"]
+        # Map characters to their corresponding indices
+        x = [self.g2idx.get(char, self.g2idx["<unk>"]) for char in chars]
+        # Convert to a tensor and add batch dimension
+        x = torch.tensor(x).unsqueeze(0)
 
-      # Encoder forward pass to get hidden state
-      hidden = self.forward(x)
+        # Encoder forward pass to get hidden state
+        hidden = self.forward(x)
 
-      # Initialize decoder with the start token
-      decoder_input = torch.tensor([[self.p2idx["<s>"]]])
-      # List to store predicted phonemes
-      preds = []
-      # Max sequence length
-      max_length = 20
+        # Initialize decoder with the start token
+        decoder_input = torch.tensor([[self.p2idx["<s>"]]])
+        # List to store predicted phonemes
+        preds = []
+        # Max sequence length
+        max_length = 20
 
-      for _ in range(max_length):
-          embedded = self.dec_emb(decoder_input)  # Embed the current decoder input
-          output, hidden = self.dec_gru(embedded, hidden)  # Pass through the decoder GRU
-          logits = self.fc(output.squeeze(1))  # Pass the output through the fully connected layer
-          pred = logits.argmax(dim=1)  # Get the predicted phoneme
-          pred_idx = pred.item()  # Convert to a Python scalar
-          if pred_idx == self.p2idx["</s>"]:  # If the end-of-sequence token is predicted, stop
-              break
-          preds.append(pred_idx)  # Append the predicted phoneme
-          decoder_input = pred.unsqueeze(0)  # Update the decoder input
+        for _ in range(max_length):
+            # Embed the current decoder input
+            embedded = self.dec_emb(decoder_input)
+            # Pass through the decoder GRU
+            output, hidden = self.dec_gru(embedded, hidden)
+            # Pass the output through the fully connected layer
+            logits = self.fc(output.squeeze(1))
+            pred = logits.argmax(dim=1)  # Get the predicted phoneme
+            pred_idx = pred.item()  # Convert to a Python scalar
+            # If the end-of-sequence token is predicted, stop
+            if pred_idx == self.p2idx["</s>"]:
+                break
+            preds.append(pred_idx)  # Append the predicted phoneme
+            decoder_input = pred.unsqueeze(0)  # Update the decoder input
 
-      # Convert phoneme indices back to phonemes
-      preds = [self.idx2p[idx] for idx in preds]
-      return preds
+        # Convert phoneme indices back to phonemes
+        preds = [self.idx2p[idx] for idx in preds]
+        return preds
 
     def normalize_text(self, text):
         """
@@ -188,15 +198,17 @@ class G2P(nn.Module):
         prons = []
         for word, pos in tokens:
             if not re.search("[a-z]", word):
-                pron = [word] # If the word doesn't contain letters, treat as is
+                # If the word doesn't contain letters, treat as is
+                pron = [word]
             elif word.lower() in self.heteronym2features:
                 pron1, pron2, pos1 = self.heteronym2features[word.lower()]
-                if pos.startswith(pos1): # Choose appropriate pronunciation based on POS tag
+                # Choose appropriate pronunciation based on POS tag
+                if pos.startswith(pos1):
                     pron = pron1
                 else:
                     pron = pron2
             else:
-                pron = self.predict(word.lower()) # Predict phoneme sequence
-            prons.extend(pron) # Add pronunciation to result
-            prons.append(" ") # Separate words with space
+                pron = self.predict(word.lower())  # Predict phoneme sequence
+            prons.extend(pron)  # Add pronunciation to result
+            prons.append(" ")  # Separate words with space
         return prons[:-1]  # Remove the last extra space
