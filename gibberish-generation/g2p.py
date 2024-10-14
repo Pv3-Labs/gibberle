@@ -74,7 +74,7 @@ class G2P(nn.Module):
         # Hidden state size for GRUs (RNN units).
         hidden_size = 256
         # Dropout rate
-        dropout_rate = 0.5
+        dropout_rate = 0.2
 
         # Embedding for input graphemes
         self.enc_emb = nn.Embedding(len(self.graphemes), embedding_dim)
@@ -102,10 +102,17 @@ class G2P(nn.Module):
         """
         Loads the pre-trained model parameters.
         """
-        if checkpoint_path == None:
-            checkpoint = torch.load(os.path.join(dirname, 'g2p-assets', 'model-checkpoint.pt'), map_location='cpu', weights_only=True)
-        else:
-            checkpoint = torch.load(checkpoint_path, map_location='cpu', weights_only=True)
+        if checkpoint_path is None:
+            # Set the default checkpoint path
+            checkpoint_path = os.path.join(dirname, 'g2p-assets', 'model-checkpoint.pt')
+        
+        # Check if the checkpoint file exists
+        if not os.path.exists(checkpoint_path):
+            print(f"Checkpoint not found at {checkpoint_path}. Using random weights.")
+            return  # Use random weights, so no need to load anything
+
+        # If the checkpoint exists, load it
+        checkpoint = torch.load(checkpoint_path, map_location='cpu', weights_only=True)
 
         # Load parameters into encoder layers
         self.enc_emb.weight.data.copy_(checkpoint['enc_emb.weight'])
@@ -142,6 +149,7 @@ class G2P(nn.Module):
         """
         Predicts the phoneme sequence for a given word.
         """
+        self.eval() # Set model to evaluation mode
         # Convert the word into a list of characters and end of sequence token
         chars = list(word) + ["</s>"]
         # Map characters to their corresponding indices

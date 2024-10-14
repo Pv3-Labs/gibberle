@@ -287,8 +287,4 @@ if __name__ == '__main__':
         if epochs_no_improve >= patience:
             print("Early stopping triggered.")
             break
-
-    # Save the trained model's state_dict to a checkpoint file
-    final_checkpoint_file = os.path.join(os.path.dirname(__file__), 'new-training-final-checkpoint.pt')
-    # Changed to saving the entire model state_dict instead of individual parameters
-    torch.save(g2p_model.state_dict(), final_checkpoint_file)
+        
