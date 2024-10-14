@@ -11,14 +11,14 @@ import torch.nn as nn
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from datasets import load_dataset  # Used for hugging face dataset 🤗
-from g2p import G2p  # g2p.py
+from g2p import G2P  # g2p.py
 from torch.nn.utils.rnn import \
     pad_sequence  # Used to pad sequences for batching
 from torch.utils.data import DataLoader  # Provides data loading utilities
 from tqdm import tqdm  # For progress bars during training and validation
 
 # Instantiate the G2P model from g2p.py
-g2p_model = G2p()
+g2p_model = G2P()
 
 # Load the s3prl/g2p Dataset
 # DatasetDict({

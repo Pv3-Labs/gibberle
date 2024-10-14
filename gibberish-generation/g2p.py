@@ -32,13 +32,13 @@ def construct_heteronym_dictionary():
 
     return heteronym2features
 
-# G2p model using PyTorch
-class G2p(nn.Module):
+# G2P model using PyTorch
+class G2P(nn.Module):
     def __init__(self):
         """
-        Initializes the G2p model.
+        Initializes the G2P model.
         """
-        super(G2p, self).__init__() # Required for PyTorch models
+        super(G2P, self).__init__() # Required for PyTorch models
 
         # List of graphemes including special tokens for padding, unknown, 
         # and end of sequence, respectively

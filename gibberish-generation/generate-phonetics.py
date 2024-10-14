@@ -1,6 +1,6 @@
 import nltk
-from g2p import G2p
-# from g2p_en import G2p
+from g2p import G2P
+# from g2p_en import G2P
 from nltk.corpus import cmudict
 
 # Download cmudict if not already installed
@@ -18,16 +18,16 @@ def lookup_cmudict(word):
         return None
 
 def main():
-    # Initialize G2p model
-    model = G2p()
+    # Initialize G2P model
+    model = G2P()
 
     # Input text
     text = "Please do not touch"
     
-    # Get G2p model's phonetic representation
+    # Get G2P model's phonetic representation
     phonetic_sequence = model(text)
     phonetic_output_g2p = ' '.join(phonetic_sequence)
-    print("\nPhonetic representation (G2p):")
+    print("\nPhonetic representation (G2P):")
     print(phonetic_output_g2p)
 
     # Split text into words
