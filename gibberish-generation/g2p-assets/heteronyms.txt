@@ -1,9 +1,10 @@
 # Based on https://github.com/Kyubyong/g2p/blob/master/g2p_en/homographs.en
 # Updated to use spaCy tags
-#
+
 # HEADWORD|PRONUNCIATION1|PRONUNCIATION2|POS
 # HEADWORD should have PRONUNCIATION1 only if it's part-of-speech is POS 
 # Otherwise PRONUNCIATION2 is applied 
+
 ABSENT|AH1 B S AE1 N T|AE1 B S AH0 N T|VERB
 ABSTRACT|AE0 B S T R AE1 K T|AE1 B S T R AE2 K T|VERB
 ABSTRACTS|AE0 B S T R AE1 K T S|AE1 B S T R AE0 K T S|VERB
