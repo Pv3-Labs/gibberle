@@ -153,7 +153,7 @@ if __name__ == '__main__':
 
     # Define the loss function and optimizer
     criterion = nn.CrossEntropyLoss(ignore_index=g2p_model.p2idx["<pad>"])
-    optimizer = torch.optim.Adam(g2p_model.parameters(), lr=0.001, weight_decay=1e-5)
+    optimizer = torch.optim.Adam(g2p_model.parameters(), lr=0.001, weight_decay=1e-4)
 
     # Mixed precision training setup
     scaler = GradScaler()
@@ -162,10 +162,10 @@ if __name__ == '__main__':
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     g2p_model.to(device)
 
-    num_epochs = 15  # Number of epochs
+    num_epochs = 25  # Number of epochs
     accumulation_steps = 4  # Number of batches for gradient accumulation
     best_val_loss = float('inf')  # Lowest validation loss
-    patience = 5  # Number of epochs to wait for improvement
+    patience = 10  # Number of epochs to wait for improvement
     epochs_without_improvement = 0  # Number of epochs without improvement
 
     # Training loop with optimizations for mixed precision and gradient accumulation
@@ -183,7 +183,7 @@ if __name__ == '__main__':
             batch_size = input_ids.size(0)
 
             # Apply noise to input_ids during training
-            def add_noise_to_input(input_ids, noise_factor=0.1):
+            def add_noise_to_input(input_ids, noise_factor=0.2):
                 noisy_input = input_ids.clone()
                 mask = torch.rand(noisy_input.shape) < noise_factor  # Randomly choose elements to replace
                 noisy_input[mask] = g2p_model.g2idx["<unk>"]  # Replace some characters with <unk>

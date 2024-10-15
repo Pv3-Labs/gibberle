@@ -126,7 +126,7 @@ if __name__ == "__main__":
     generated_seed = random.randint(0, 10000)
     # generated_seed = 384
     print(f"Generated Seed: {generated_seed}")
-    debug = False  
+    debug = True  
 
     dirname = os.path.dirname(__file__)
     model_checkpoint = os.path.join(dirname, 'model-checkpoint.pt')

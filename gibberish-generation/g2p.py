@@ -72,7 +72,7 @@ class G2P(nn.Module):
         # Embedding dimension for graphemes and phonemes.
         embedding_dim = 128
         # Hidden state size for GRUs (RNN units).
-        hidden_size = 256
+        hidden_size = 128
         # Dropout rate
         dropout_rate = 0.5
 
