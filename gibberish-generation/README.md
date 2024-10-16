@@ -21,21 +21,14 @@ To run this project, you need to install the required Python packages. Follow th
 
 ### Dependencies
 
+- Follow the Setup Instructions in the src `README.md` file for packages.
+- However, the `spaCy` model must be installed through:
+
 ```
-pip install torch
-pip install spacy
-pip install datasets
-pip install tqdm
-pip install editdistance
 python -m spacy download en_core_web_sm
 ```
 
-- Note: If you are planning to train the model, you need to ensure PyTorch is installed with CUDA support. To check your verison, run the `check-cuda.py` script in the `g2p-assets` directory. If CUDA support is not available, you can run the command below to install PyTorch with CUDA support.
-
-```
-pip install torch --extra-index-url https://download.pytorch.org/whl/cu124
-```
-
+- Note: If you are planning to train the model, you need to ensure PyTorch is installed with CUDA support. To check your verison, run the `check-cuda.py` script in the `g2p-assets` directory.
 - Additional Note: You do not need NVIDIA CUDA Toolkit installed to use PyTorch with CUDA support.
 
 ## Model Usage
