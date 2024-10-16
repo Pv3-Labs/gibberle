@@ -1,4 +1,5 @@
-# g2p model for converting graphemes to phonemes
+# g2p.py
+# G2P model for converting graphemes to phonemes
 # Inspired from https://github.com/Kyubyong/g2p/blob/master/g2p_en/g2p.py
 
 import os  # For file path operations

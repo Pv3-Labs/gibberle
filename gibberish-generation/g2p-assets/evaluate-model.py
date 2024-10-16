@@ -1,3 +1,6 @@
+# evaluate-model.py
+# For evaluation of model weights
+
 import os
 import random
 import sys

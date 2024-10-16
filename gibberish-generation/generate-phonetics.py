@@ -1,3 +1,6 @@
+# generate-phonetics.py
+# For utilizing the G2P model
+
 import nltk
 from g2p import G2P
 from nltk.corpus import cmudict
