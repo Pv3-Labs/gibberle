@@ -28,7 +28,12 @@ To run this project, you need to install the required Python packages. Follow th
 python -m spacy download en_core_web_sm
 ```
 
-- Note: If you are planning to train the model, you need to ensure PyTorch is installed with CUDA support. To check your verison, run the `check-cuda.py` script in the `g2p-assets` directory.
+- Note: If you see `CUDA Available: False`, but you know you have CUDA cores, run the `check-cuda.py` script in `g2p-assets` and check your version. If you do not see a version like `2.5.0+cu124`, you can download PyTorch with CUDA support here:
+
+```
+pip install torch --extra-index-url https://download.pytorch.org/whl/cu124
+```
+
 - Additional Note: You do not need NVIDIA CUDA Toolkit installed to use PyTorch with CUDA support.
 
 ## Model Usage
