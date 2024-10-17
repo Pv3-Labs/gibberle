@@ -16,8 +16,8 @@ To run this project, you need to install the required Python packages. Follow th
 
 - Python 3.8+
 - NVIDIA GPU with CUDA and Tensor Cores (for training)
-  - If your GPU does not have CUDA Cores, PyTorch will automatically perform model training on your CPU.
-  - If your GPU does not have Tensor Cores, you cannot use [Mixed Precision Training](https://docs.nvidia.com/deeplearning/performance/mixed-precision-training/index.html) and references to `autocast` and `GradScalar` will need to be removed.
+  - If your GPU does not have CUDA Cores, the code will automatically train on your CPU.
+  - If your GPU does not have Tensor Cores, mixed precision will still be used, but performance won't be as good.
 
 ### Dependencies
 
@@ -38,7 +38,7 @@ pip install torch --extra-index-url https://download.pytorch.org/whl/cu124
 
 ## Model Usage
 
-- To run the model, ensure the dependencies above are installed and then change the `text` string in `generate-phonetics.py`. Additionally, to evaluate the current model weights (or compare two model weights), you can run the `evaluate-model.py` script.
+- To run the model, ensure the dependencies above are installed and then change the `text` string in `generate-phonetics.py`. Additionally, to evaluate the current model weights (or compare multiple model weights), you can run the `evaluate-model.py` script.
 
 ## Model Training
 

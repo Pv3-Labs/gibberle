@@ -1,4 +1,4 @@
-# evaluate-model.py
+# gibberish-generation/g2p-assets/evaluate-model.py
 # For evaluation of model weights using the CMUdict dataset
 
 import os
