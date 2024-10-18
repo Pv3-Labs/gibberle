@@ -1,3 +1,4 @@
+import { Keyboard } from '@/components/Keyboard/Keyboard';
 import { Box, Heading } from "@chakra-ui/react";
 
 export default function Home() {
@@ -12,6 +13,7 @@ export default function Home() {
       >
         Gibberle
       </Heading>
+      <Keyboard/>
     </Box>
   );
 }
