@@ -1,5 +1,6 @@
 # generate-phonetics.py
 # For utilizing the G2P model
+import os
 
 import nltk
 from g2p import G2P
@@ -17,7 +18,9 @@ def lookup_cmudict(word):
         return None
 
 def main():
-    model = G2P()
+    dirname = os.path.dirname(__file__)
+    model_checkpoint = os.path.join(dirname, 'g2p-assets', 'model-checkpoint.pt')
+    model = G2P(checkpoint_path=model_checkpoint)
     text = "Please do not touch"
 
     phonetic_sequence = model(text)
