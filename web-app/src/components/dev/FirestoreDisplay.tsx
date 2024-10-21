@@ -54,7 +54,7 @@ export function FirestoreDisplay() {
             bg="#212121"
           >
             <Text fontSize="xl" fontWeight="bold">
-              {doc.name}
+              {doc.name ? (doc.name as string) : "No Name"}
             </Text>
             <Text mb={2}>ID: {doc.id}</Text>
             <Box>
