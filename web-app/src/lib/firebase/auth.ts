@@ -6,7 +6,7 @@ import {
 import { auth } from "./clientapp";
 
 // Function to listen to authentication state changes
-export function onAuthStateChangedF(cb: (user: any) => void) {
+export function onAuthStateChangedF(cb: (user: unknown) => void) {
   return onAuthStateChanged(auth, cb);
 }
 

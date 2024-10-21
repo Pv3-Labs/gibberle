@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 
 interface FirestoreDocument {
   id: string;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 export function FirestoreDisplay() {
