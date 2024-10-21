@@ -1,4 +1,5 @@
 import { Box, Heading } from "@chakra-ui/react";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -10,7 +11,7 @@ export default function Home() {
         mb={5}
         mt={{ base: "none", md: "30" }}
       >
-        Gibberle
+        <Link href="/dev/sandbox">Gibberle</Link>
       </Heading>
     </Box>
   );
