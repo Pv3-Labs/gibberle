@@ -1,3 +1,6 @@
+import { FirestoreButton } from "@/components/dev/FirestoreButton";
+import { FirestoreDisplay } from "@/components/dev/FirestoreDisplay";
+import { FirestoreDynamicInput } from "@/components/dev/FirestoreDynamicInput";
 import { Box, Heading } from "@chakra-ui/react";
 
 export default function Sandbox() {
@@ -12,6 +15,9 @@ export default function Sandbox() {
       >
         Sandbox
       </Heading>
+      <FirestoreButton />
+      <FirestoreDisplay />
+      <FirestoreDynamicInput />
     </Box>
   );
 }
