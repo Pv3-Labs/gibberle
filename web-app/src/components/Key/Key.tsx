@@ -12,12 +12,20 @@ export const Key: React.FC<KeyProp> = ({keyChar, keyWidth='72px', isPressed=fals
   
   return (
     <Button 
-      bg={isPressed ? 'FF0000' : '#1C1C1C' }
+      bg='#1C1C1C'
       w={keyWidth}
       h='72px'
       borderRadius={12}
+      // boxShadow is the gradient glow arund the key when pressed
+      boxShadow={isPressed ? "-2px -2px 3px 1px #E18D6F, 2px 2px 3px 1px #D270BC, -2px 2px 3px 1px #E18D6F, 2px -2px 3px 1px #D270BC" : "0 0 0 0px transparent"}
     >
-      <Text fontSize='4xl' fontWeight='medium'>
+      <Text
+        fontSize='4xl' 
+        fontWeight='medium'
+        bgGradient={isPressed ? 'linear(to-r, #E18D6F, #D270BC)' : 'undefined'}
+        bgClip='text'
+        color={isPressed ? 'transparent' : '#FFFFFF'}
+      >
         {keyChar}
       </Text>
     </Button>
