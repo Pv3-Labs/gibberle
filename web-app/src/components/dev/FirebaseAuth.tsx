@@ -4,18 +4,19 @@ import {
   onAuthStateChangedF,
   signInWithGoogle,
   signOut,
-} from "@/lib/firebase/auth"; // Adjust path
+} from "@/lib/firebase/auth";
 import { Box, Button, Text } from "@chakra-ui/react";
+import { User } from "firebase/auth";
 import { useEffect, useState } from "react";
 
 export function FirebaseAuth() {
-  const [user, setUser] = useState<unknown>(null);
+  const [user, setUser] = useState<User | null>(null);
 
   // Listen for auth state changes
   useEffect(() => {
     const unsubscribe = onAuthStateChangedF((authUser) => {
       if (authUser) {
-        setUser(authUser);
+        setUser(authUser as User);
       } else {
         setUser(null);
       }

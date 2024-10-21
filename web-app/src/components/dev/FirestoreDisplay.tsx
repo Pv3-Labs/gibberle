@@ -31,7 +31,7 @@ export function FirestoreDisplay() {
   };
 
   useEffect(() => {
-    fetchDocuments(); // Initial fetch on page load
+    fetchDocuments();
   }, []);
 
   if (loading) {
@@ -61,7 +61,7 @@ export function FirestoreDisplay() {
               {Object.keys(doc).map((key) =>
                 key !== "id" && key !== "name" ? (
                   <Text key={key}>
-                    {key}: {JSON.stringify(doc[key])}
+                    {key}: {JSON.stringify(doc[key]) as string}
                   </Text>
                 ) : null
               )}

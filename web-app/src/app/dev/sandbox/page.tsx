@@ -5,15 +5,16 @@ import { FirestoreDisplay } from "@/components/dev/FirestoreDisplay";
 import { FirestoreDynamicInput } from "@/components/dev/FirestoreDynamicInput";
 import { onAuthStateChangedF } from "@/lib/firebase/auth"; // Adjust path as needed
 import { Box, Heading, Text } from "@chakra-ui/react";
+import { User } from "firebase/auth";
 import { useEffect, useState } from "react";
 
 export default function Sandbox() {
-  const [user, setUser] = useState<unknown>(null); // Track authenticated user
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChangedF((authUser) => {
       if (authUser) {
-        setUser(authUser);
+        setUser(authUser as User);
       } else {
         setUser(null);
       }
