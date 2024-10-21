@@ -59,7 +59,7 @@ export const Keyboard: React.FC<KeyboardProp> = ({layout="qwerty", isHidden=fals
   return (
     <Box
       w='850px'
-      h='360px'
+      h='300px'
       borderRadius={'36px'}
       background={`linear-gradient(rgba(0, 0, 0, 0.33), rgba(0, 0, 0, 0.33)), #A199CA`}
       backgroundBlendMode="multiply"
