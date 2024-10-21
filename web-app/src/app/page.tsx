@@ -13,7 +13,7 @@ export default function Home() {
       >
         Gibberle
       </Heading>
-      <Keyboard/>
+      <Keyboard isHidden={false} isDisabled={true} />
     </Box>
   );
 }

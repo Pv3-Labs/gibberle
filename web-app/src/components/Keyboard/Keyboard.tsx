@@ -4,7 +4,7 @@ import { KeyboardProp } from "@/components/Keyboard/types";
 import { Box, HStack, VStack } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
 
-export const Keyboard: React.FC<KeyboardProp> = ({layout="qwerty"}) => {
+export const Keyboard: React.FC<KeyboardProp> = ({layout="qwerty", isHidden=false, isDisabled=false}) => {
   // Default keyboard layout
   const qwertyKeyboard = [["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"],
                           ["A", "S", "D", "F", "G", "H", "J", "K", "L"],
