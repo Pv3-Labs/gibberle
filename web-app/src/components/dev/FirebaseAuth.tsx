@@ -9,7 +9,7 @@ import { Box, Button, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
 export function FirebaseAuth() {
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<unknown>(null);
 
   // Listen for auth state changes
   useEffect(() => {

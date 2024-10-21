@@ -8,7 +8,7 @@ import { Box, Heading, Text } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
 export default function Sandbox() {
-  const [user, setUser] = useState<any>(null); // Track authenticated user
+  const [user, setUser] = useState<unknown>(null); // Track authenticated user
 
   useEffect(() => {
     const unsubscribe = onAuthStateChangedF((authUser) => {
