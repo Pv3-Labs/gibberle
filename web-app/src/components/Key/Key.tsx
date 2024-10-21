@@ -18,6 +18,7 @@ export const Key: React.FC<KeyProp> = ({keyChar, keyWidth='72px', isPressed=fals
       borderRadius={12}
       // boxShadow is the gradient glow arund the key when pressed
       boxShadow={isPressed ? "-2px -2px 3px 1px #E18D6F, 2px 2px 3px 1px #D270BC, -2px 2px 3px 1px #E18D6F, 2px -2px 3px 1px #D270BC" : "0 0 0 0px transparent"}
+      _hover={{bg: '#333333'}}
     >
       <Text
         fontSize='4xl' 
