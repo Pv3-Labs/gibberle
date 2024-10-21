@@ -3,16 +3,16 @@ import {
   onAuthStateChanged,
   signInWithPopup,
 } from "firebase/auth";
-
 import { auth } from "./clientapp";
 
-export function onAuthStateChangedF(cb) {
+// Function to listen to authentication state changes
+export function onAuthStateChangedF(cb: (user: any) => void) {
   return onAuthStateChanged(auth, cb);
 }
 
+// Function to sign in with Google
 export async function signInWithGoogle() {
   const provider = new GoogleAuthProvider();
-
   try {
     await signInWithPopup(auth, provider);
   } catch (error) {
@@ -20,10 +20,11 @@ export async function signInWithGoogle() {
   }
 }
 
+// Function to sign out the current user
 export async function signOut() {
   try {
-    return auth.signOut();
+    return await auth.signOut();
   } catch (error) {
-    console.error("Error signing out with Google", error);
+    console.error("Error signing out", error);
   }
 }
