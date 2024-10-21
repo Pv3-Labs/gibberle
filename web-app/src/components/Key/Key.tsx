@@ -8,6 +8,7 @@ export const Key: React.FC<KeyProp> = ({keyChar, keyWidth='72px', isPressed=fals
   //  - this would make it so we have don't have to set the width
   if (keyChar === "Enter") {
     keyWidth = "87px";
+    keyChar = "Ent";
   };
   
   return (
