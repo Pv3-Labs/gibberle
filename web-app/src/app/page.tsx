@@ -1,3 +1,4 @@
+import { InputCursor } from "@/components/InputCursor/InputCursor";
 import { Box, Heading } from "@chakra-ui/react";
 
 export default function Home() {
@@ -12,6 +13,7 @@ export default function Home() {
       >
         Gibberle
       </Heading>
+      <InputCursor />
     </Box>
   );
 }
