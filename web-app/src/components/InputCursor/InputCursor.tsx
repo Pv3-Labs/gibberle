@@ -4,9 +4,9 @@ import { InputCursorProp } from "./types";
 export const InputCursor: React.FC<InputCursorProp> = ({cursorStr="_"}) => {
     return (
         <Text
-            fontFamily='Roboto Mono'
-            fontSize={50}
-            align='left'
+            fontFamily='Courier New'
+            fontSize={40}
+            textAlign='left'
             letterSpacing='0.75rem'
             // following arguments are for the flashing cursor animation
             bgGradient="linear(to-r, #E18D6F, #D270BC)"
