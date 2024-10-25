@@ -1,17 +1,22 @@
-import { Box, Heading } from "@chakra-ui/react";
+'use client'
+
+import Navbar from "@/components/Navbar/Navbar";
 
 export default function Home() {
+  const handleHintClick = () => alert("Hint clicked!");
+  const handleTutorialClick = () => alert("Tutorial clicked!");
+  const handleStatsClick = () => alert("Stats clicked!");
+  const handleSettingsClick = () => alert("Settings clicked!");
+
   return (
-    <Box bg="brand.50" maxW="container.xl" mx="auto" px={5}>
-      <Heading
-        size={{ base: "xl", md: "2xl", lg: "3xl", xl: "4xl" }}
-        p={5}
-        textAlign={"center"}
-        mb={5}
-        mt={{ base: "none", md: "30" }}
-      >
-        Gibberle
-      </Heading>
-    </Box>
+    <>
+      <Navbar
+          onHintClick={handleHintClick}
+          onTutorialClick={handleTutorialClick}
+          onStatsClick={handleStatsClick}
+          onSettingsClick={handleSettingsClick}
+          disabled={false}
+        />
+    </>
   );
 }
