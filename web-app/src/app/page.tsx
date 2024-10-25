@@ -1,4 +1,4 @@
-import { InputCursor } from "@/components/InputCursor/InputCursor";
+import { InputPhrase } from "@/components/InputPhrase/InputPhrase";
 import { Box, Heading } from "@chakra-ui/react";
 
 export default function Home() {
@@ -13,7 +13,7 @@ export default function Home() {
       >
         Gibberle
       </Heading>
-      <InputCursor />
+      <InputPhrase correctPhrase="never gonna give you up" />
     </Box>
   );
 }
