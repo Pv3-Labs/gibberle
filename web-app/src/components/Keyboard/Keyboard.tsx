@@ -1,14 +1,20 @@
-"use client";  // Needed this line so useRef, useState, and useEffect worked
+"use client"; // Needed this line so useRef, useState, and useEffect worked
 import { Key } from "@/components/Key/Key";
 import { KeyboardProp } from "@/components/Keyboard/types";
-import { Box, HStack, VStack } from "@chakra-ui/react";
+import { Box, HStack, VStack,useBreakpointValue } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
 
-export const Keyboard: React.FC<KeyboardProp> = ({layout="qwerty", isHidden=false, isDisabled=false}) => {
+export const Keyboard: React.FC<KeyboardProp> = ({
+  layout = "qwerty",
+  isHidden = false,
+  isDisabled = false,
+}) => {
   // Default keyboard layout
-  const qwertyKeyboard = [["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"],
-                          ["A", "S", "D", "F", "G", "H", "J", "K", "L"],
-                          ["Z", "X", "C", "V", "B", "N", "M", "Enter"]];
+  const qwertyKeyboard = [
+    ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"],
+    ["A", "S", "D", "F", "G", "H", "J", "K", "L"],
+    ["Z", "X", "C", "V", "B", "N", "M", "Enter"],
+  ];
 
   // set of pressed keys
   const [pressedKeys, setPressedKeys] = useState<Set<string>>(new Set());
@@ -21,11 +27,11 @@ export const Keyboard: React.FC<KeyboardProp> = ({layout="qwerty", isHidden=fals
     setPressedKeys(new Set(keys));
     pressedKeysRef.current = keys;
   };
-  
+
   // key press event handler
   const handleKeyDown = (event: KeyboardEvent) => {
     // Don't want 'Enter' to be all uppercase to make passing it as a prop attribute easier
-    const key = (event.key === "Enter") ? "Enter" : event.key.toUpperCase();
+    const key = event.key === "Enter" ? "Enter" : event.key.toUpperCase();
     if ("QWERTYUIOPASDFGHJKLZXCVBNM".includes(key) || key === "Enter") {
       const newKeys = new Set(pressedKeysRef.current);
       // Error handeling?
@@ -37,7 +43,7 @@ export const Keyboard: React.FC<KeyboardProp> = ({layout="qwerty", isHidden=fals
   // event handler for when a key is released from being pressed
   const handleKeyUp = (event: KeyboardEvent) => {
     // Don't capitalize 'Enter' because we don't capitalize it on KeyDown handler
-    const key = (event.key === "Enter") ? "Enter" : event.key.toUpperCase();
+    const key = event.key === "Enter" ? "Enter" : event.key.toUpperCase();
     if ("QWERTYUIOPASDFGHJKLZXCVBNM".includes(key) || key === "Enter") {
       const newKeys = new Set(pressedKeysRef.current);
       // Error handeling??
@@ -56,30 +62,55 @@ export const Keyboard: React.FC<KeyboardProp> = ({layout="qwerty", isHidden=fals
     };
   }, []);
 
+  // Responsive container sizes
+  const containerWidth = useBreakpointValue({
+    base: "95vw",
+    sm: "700px",
+    md: "800px",
+    lg: "850px",
+  });
+
+  const containerHeight = useBreakpointValue({
+    base: "220px",
+    sm: "250px",
+    md: "280px",
+    lg: "300px",
+  });
+
   return (
     <Box
-      w='850px'
-      h='300px'
-      borderRadius={'36px'}
-      background={`linear-gradient(rgba(0, 0, 0, 0.33), rgba(0, 0, 0, 0.33)), #A199CA`}
-      backgroundBlendMode="multiply"
+      position="fixed"
+      bottom={4}
+      left="50%"
+      transform="translateX(-50%)"
+      width="100%"
       display="flex"
       justifyContent="center"
-      alignItems="center"
     >
-      <VStack align={'center'}>
-        {qwertyKeyboard.map((row, rowIndex) => (
-          <HStack key={rowIndex}>
-            {row.map((keyChar) => (
-              <Key 
-                key={keyChar}
-                keyChar={keyChar}
-                isPressed={pressedKeys.has(keyChar)}
-              />
-            ))}
-          </HStack>
-        ))}
-      </VStack>
+      <Box
+        w={containerWidth}
+        h={containerHeight}
+        borderRadius={"36px"}
+        background={`linear-gradient(rgba(0, 0, 0, 0.33), rgba(0, 0, 0, 0.33)), #A199CA`}
+        backgroundBlendMode="multiply"
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+      >
+        <VStack align={"center"}>
+          {qwertyKeyboard.map((row, rowIndex) => (
+            <HStack key={rowIndex} >
+              {row.map((keyChar) => (
+                <Key
+                  key={keyChar}
+                  keyChar={keyChar}
+                  isPressed={pressedKeys.has(keyChar)}
+                />
+              ))}
+            </HStack>
+          ))}
+        </VStack>
+      </Box>
     </Box>
   );
 };
