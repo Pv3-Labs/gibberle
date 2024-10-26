@@ -5,11 +5,10 @@ import { useEffect, useState } from "react";
 import { InputPhraseProp } from "./types";
 
 export const InputPhrase: React.FC<InputPhraseProp> = ({correctPhrase}) => {
-    // variables for tracking characters per word and which word the user is at
-
     const [inputStr, setInputStr] = useState<string>("");
     const [caretStr, setCaretStr] = useState<string>("_");
     const [inputIndex, setInputIndex] = useState<number>(0);
+    const [cursorIsVisible, setCursorIsVisible] = useState<boolean>(true);
 
     const blankPhrase = correctPhrase
         .split("")
@@ -46,12 +45,23 @@ export const InputPhrase: React.FC<InputPhraseProp> = ({correctPhrase}) => {
         }
     };
 
+    // Listener for keyboard input
     useEffect(() => {
         window.addEventListener("keydown", handleKeyDown);
         return () => {
             window.removeEventListener("keydown", handleKeyDown);
         }
-    }, [inputIndex, inputStr]);
+    }, [inputIndex, inputStr, correctPhrase]);
+
+    // Listiner for checking the input string length
+    // Makes cursor/caret invisible if input string is fully filled out
+    useEffect(() => {
+        if (inputStr.length === correctPhrase.length) {
+            setCursorIsVisible(false);
+        } else {
+            setCursorIsVisible(true);
+        }
+    }, [inputStr, correctPhrase.length]);
 
     return (
         <Box position='relative' display='inline-block'>
@@ -76,7 +86,7 @@ export const InputPhrase: React.FC<InputPhraseProp> = ({correctPhrase}) => {
                 {blankPhrase}
             </Text>
             <Box position='absolute' top={0} left={0}>
-                <InputCursor cursorStr={caretStr} />
+                <InputCursor cursorStr={caretStr} isVisible={cursorIsVisible} />
             </Box>
         </Box>
     );
