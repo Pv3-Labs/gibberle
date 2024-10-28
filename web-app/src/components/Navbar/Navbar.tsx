@@ -1,5 +1,5 @@
 import { NavbarProp } from "./types";
-import { Heading, IconButton, Box, HStack, Tooltip, Spacer, Icon, useMediaQuery, Accordion, AccordionItem, AccordionButton, AccordionPanel, VStack, /*useColorModeValue, Modal, useDisclosure*/ } from "@chakra-ui/react";
+import { Heading, IconButton, HStack, Tooltip, Icon, useMediaQuery} from "@chakra-ui/react";
 import { MdLightbulbOutline, MdLeaderboard} from "react-icons/md";
 import { HiOutlineQuestionMarkCircle } from "react-icons/hi";
 import { IoSettingsOutline } from "react-icons/io5";
