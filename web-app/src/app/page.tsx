@@ -1,3 +1,5 @@
+'use client'
+        
 import { InputPhrase } from "@/components/InputPhrase/InputPhrase";
 import { Box, Heading } from "@chakra-ui/react";
 
