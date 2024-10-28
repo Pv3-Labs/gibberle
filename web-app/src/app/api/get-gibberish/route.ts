@@ -17,7 +17,7 @@ export async function GET() {
     // Generate wordLengths string
     const wordLengths = todayPhrase.phrase
       .split(" ")
-      .map((word) => "a".repeat(word.length))
+      .map((word: string | unknown[]) => "a".repeat(word.length))
       .join(" ");
 
     return NextResponse.json({
