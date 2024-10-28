@@ -1,3 +1,4 @@
 export interface InputPhraseProp {
-    correctPhrase: string;
+  wordLengths: string;
+  handleKeyPress: (key: string) => void;
 }
