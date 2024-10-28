@@ -1,6 +1,7 @@
-'use client'
-        
+"use client";
+
 import { InputPhrase } from "@/components/InputPhrase/InputPhrase";
+import { Keyboard } from "@/components/Keyboard/Keyboard";
 import { Box, Heading } from "@chakra-ui/react";
 
 export default function Home() {
@@ -20,6 +21,7 @@ export default function Home() {
       >
         Gibberle
       </Heading>
+      <Keyboard isHidden={false} isDisabled={true} />
       <Box marginY={5}>
         <InputPhrase correctPhrase="never gonna give you up" />
       </Box>
