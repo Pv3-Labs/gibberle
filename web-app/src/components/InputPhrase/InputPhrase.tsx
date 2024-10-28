@@ -32,6 +32,7 @@ export const InputPhrase: React.FC<InputPhraseProp> = ({correctPhrase}) => {
         .join("");
     
     const handleKeyDown = (event: KeyboardEvent) => {
+        console.log("inputIndex: " + inputIndex);
         const key = event.key.toUpperCase();
         if ("QWERTYUIOPASDFGHJKLZXCVBNM".includes(key) && (inputIndex < correctPhrase.length)) {
             setInputStr((prev) => prev.slice(0, inputIndex) + key + prev.slice(inputIndex + 1));
@@ -54,7 +55,7 @@ export const InputPhrase: React.FC<InputPhraseProp> = ({correctPhrase}) => {
                 if (inputIndex === correctPhrase.length - 1) {
                     setCaretStr((prev) => prev.slice(0, inputIndex-2) + "_ " + "\u00A0 " + prev.slice(inputIndex + 1));
                 } else {
-                    setCaretStr((prev) => prev.slice(0, inputIndex-2) + "_" + "\u00A0 " + prev.slice(inputIndex + 1));
+                    setCaretStr((prev) => prev.slice(0, inputIndex-2) + "_ \u00A0" + prev.slice(inputIndex + 1));
                 }
                 setInputIndex((prev) => prev - 2);
             } else {
