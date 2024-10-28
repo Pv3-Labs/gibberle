@@ -4,9 +4,9 @@ import { InputCursorProp } from "./types";
 export const InputCursor: React.FC<InputCursorProp> = ({cursorStr="_", isVisible=true}) => {
     return (
         <Text
-            fontFamily='Courier New'
-            fontSize={40}
-            textAlign='left'
+            fontFamily="'Hack', monospace"
+            fontSize={{ base: '20px', md: '2.5vw', lg: '3vw' }}
+            textAlign='center'
             letterSpacing='0.75rem'
             // following arguments are for the flashing cursor animation
             // the animation only happens when isVisible is true
