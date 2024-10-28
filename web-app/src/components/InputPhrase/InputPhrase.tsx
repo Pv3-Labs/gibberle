@@ -1,6 +1,7 @@
 "use client"; // Needed this line so useState, and useEffect work
 import { InputCursor } from "@/components/InputCursor/InputCursor";
 import { Box, Text } from "@chakra-ui/react";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { InputPhraseProp } from "./types";
 
@@ -27,6 +28,7 @@ export const InputPhrase: React.FC<InputPhraseProp> = ({ wordLengths }) => {
         .join("")
   );
   const [isIncomplete, setIsIncomplete] = useState<boolean>(false);
+  const router = useRouter();
 
   const blankPhrase = wordLengths
     .split("")
@@ -125,8 +127,14 @@ export const InputPhrase: React.FC<InputPhraseProp> = ({ wordLengths }) => {
       body: JSON.stringify({ guess: userInput.replace(/\u00A0/g, "") }), // Remove non-breaking spaces
     });
     const data = await response.json();
-    if (!data.correct) {
-      flashIncomplete(); // show feedback for incorrect guess
+
+    if (data.correct) {
+      // Store the completion date as the current day in localStorage
+      const completionDate = new Date().toISOString().split("T")[0]; // Store as YYYY-MM-DD
+      localStorage.setItem("gibberleCompletionDate", completionDate);
+      router.push("/completed");
+    } else {
+      flashIncomplete();
     }
   };
 

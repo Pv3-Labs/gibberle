@@ -5,7 +5,13 @@ import { GibberishPhraseProp } from "./types";
 
 export default function GibberishPhrase({ phrase }: GibberishPhraseProp) {
   return (
-    <Heading size="2xl" my={20} w="100%" textAlign="center" color="#f4f4f4">
+    <Heading
+      fontSize={{ base: "3xl", sm: "3xl", md: "4xl", lg: "5xl", xl: "6xl" }}
+      my={20}
+      w="100%"
+      textAlign="center"
+      color="#f4f4f4"
+    >
       {phrase}
     </Heading>
   );

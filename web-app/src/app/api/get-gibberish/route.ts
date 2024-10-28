@@ -23,6 +23,7 @@ export async function GET() {
     return NextResponse.json({
       phrase: todayPhrase.gibberish,
       wordLengths: wordLengths,
+      hint: todayPhrase.hint,
     });
   } catch (error) {
     console.error("Error loading gibberish.json:", error);
