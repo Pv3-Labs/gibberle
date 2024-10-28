@@ -1,7 +1,7 @@
 "use client"; // Needed this line so useRef, useState, and useEffect worked
 import { Key } from "@/components/Key/Key";
 import { KeyboardProp } from "@/components/Keyboard/types";
-import { Box, HStack, VStack,useBreakpointValue } from "@chakra-ui/react";
+import { Box, HStack, useBreakpointValue, VStack } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
 
 export const Keyboard: React.FC<KeyboardProp> = ({
@@ -64,23 +64,42 @@ export const Keyboard: React.FC<KeyboardProp> = ({
 
   // Responsive container sizes
   const containerWidth = useBreakpointValue({
-    base: "95vw",
-    sm: "700px",
-    md: "800px",
-    lg: "850px",
+    base: "98vw",
+    sm: "90vw",
+    md: "70vw",
+    lg: "60vw",
   });
 
   const containerHeight = useBreakpointValue({
-    base: "220px",
-    sm: "250px",
-    md: "280px",
-    lg: "300px",
+    base: "29vh",
+    sm: "32vh",
+    md: "35vh",
+    lg: "39vh",
+  });
+
+  const keySpacing = useBreakpointValue({
+    base: "0.3vh",
+    sm: "0.6vh",
+    md: "1vh",
+  });
+
+  const rowSpacing = useBreakpointValue({
+    base: "0.3vh",
+    sm: "0.6vh",
+    md: "1vh",
+  });
+
+  const bottomSpacing = useBreakpointValue({
+    base: "0",
+    sm: "1.5vh",
+    md: "2vh",
+    lg: "2vh",
   });
 
   return (
     <Box
       position="fixed"
-      bottom={4}
+      bottom={bottomSpacing}
       left="50%"
       transform="translateX(-50%)"
       width="100%"
@@ -97,9 +116,9 @@ export const Keyboard: React.FC<KeyboardProp> = ({
         justifyContent="center"
         alignItems="center"
       >
-        <VStack align={"center"}>
+        <VStack spacing={rowSpacing}>
           {qwertyKeyboard.map((row, rowIndex) => (
-            <HStack key={rowIndex} >
+            <HStack key={rowIndex} spacing={keySpacing}>
               {row.map((keyChar) => (
                 <Key
                   key={keyChar}
