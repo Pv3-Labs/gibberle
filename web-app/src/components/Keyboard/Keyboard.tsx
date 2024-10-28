@@ -74,19 +74,33 @@ export const Keyboard: React.FC<KeyboardProp> = ({
     }
   };
 
+  // Map to store the timeout IDs for each key
+  const keyTimeouts = useRef<Map<string, NodeJS.Timeout>>(new Map());
+
   // Touch/click event handler for virtual keys (to work on mobile)
   const handleVirtualKeyPress = (key: string) => {
     if (onKeyPress) {
       onKeyPress(key); // Call onKeyPress prop
     }
+
     const newKeys = new Set(pressedKeysRef.current);
     newKeys.add(key);
     updatePressedKeys(newKeys);
 
-    setTimeout(() => {
-      newKeys.delete(key);
-      updatePressedKeys(newKeys);
-    }, 120);
+    // Clear any existing timeout for this key before setting a new one
+    if (keyTimeouts.current.has(key)) {
+      clearTimeout(keyTimeouts.current.get(key));
+    }
+
+    // Set a new timeout for this key and store it in the map
+    const timeoutId = setTimeout(() => {
+      const updatedKeys = new Set(pressedKeysRef.current);
+      updatedKeys.delete(key);
+      updatePressedKeys(updatedKeys);
+      keyTimeouts.current.delete(key); // Remove timeout from map after it's executed
+    }, 50);
+
+    keyTimeouts.current.set(key, timeoutId); // Store the new timeout for this key
   };
 
   useEffect(() => {
