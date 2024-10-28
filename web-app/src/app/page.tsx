@@ -40,7 +40,18 @@ export default function Home() {
 
   return (
     <>
-      <Navbar onHintClick={handleHintClick} />
+      <Navbar
+        onHintClick={handleHintClick}
+        onTutorialClick={function (): void {
+          console.log("This feature has not implemented yet!");
+        }}
+        onStatsClick={function (): void {
+          console.log("This feature has not implemented yet!");
+        }}
+        onSettingsClick={function (): void {
+          console.log("This feature has not implemented yet!");
+        }}
+      />
       <Box bg="brand.50" maxW="container.xl" mx="auto" px={5} overflow="hidden">
         {!gibberishData ? (
           <VStack align="center" w="full">
