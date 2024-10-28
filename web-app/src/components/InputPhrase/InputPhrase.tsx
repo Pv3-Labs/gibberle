@@ -9,7 +9,7 @@ export const InputPhrase: React.FC<InputPhraseProp> = ({correctPhrase}) => {
     //  if you don't use it adding spaces in certain scenarios
     //  won't do anything as it will collapses the spaces.
     //  So I needed to use this special space character 
-    //  ONLY in place of the characters, not the regualr spaces
+    //  ONLY in place of the characters, not the regular spaces
     const [inputStr, setInputStr] = useState<string>(
         correctPhrase
             .split("")
@@ -37,11 +37,9 @@ export const InputPhrase: React.FC<InputPhraseProp> = ({correctPhrase}) => {
             setInputStr((prev) => prev.slice(0, inputIndex) + key + prev.slice(inputIndex + 1));
             if (correctPhrase[inputIndex + 1] === " ") {
                 // Next character after the cursor is a space, so add a space automatically
-                // setInputStr((prev) => prev + key + " ");
                 setCaretStr((prev) => prev.slice(0, inputIndex) + "\u00A0 " + "_" + prev.slice(inputIndex + 3));
                 setInputIndex((prev) => prev + 2);
             } else {
-                // setInputStr((prev) => prev + key);
                 if (inputIndex === correctPhrase.length - 1) {
                     setCaretStr((prev) => prev.slice(0, inputIndex) + "_");
                 } else {
@@ -51,8 +49,7 @@ export const InputPhrase: React.FC<InputPhraseProp> = ({correctPhrase}) => {
             }
         } else if (key === "BACKSPACE" && (inputIndex > 0)) {
             if (inputStr[inputIndex - 1] === " ") {
-                // previouse character is a space, so automatically delete space
-                // setInputStr((prev) => prev.slice(0, -2));
+                // Previouse character is a space, so automatically delete space
                 setInputStr((prev) => prev.slice(0, inputIndex-2) + "\u00A0 " + prev.slice(inputIndex));
                 if (inputIndex === correctPhrase.length - 1) {
                     setCaretStr((prev) => prev.slice(0, inputIndex-2) + "_ " + "\u00A0 " + prev.slice(inputIndex + 1));
@@ -61,7 +58,6 @@ export const InputPhrase: React.FC<InputPhraseProp> = ({correctPhrase}) => {
                 }
                 setInputIndex((prev) => prev - 2);
             } else {
-                // setInputStr((prev) => prev.slice(0, -1));
                 setInputStr((prev) => prev.slice(0, inputIndex-1) + "\u00A0" + prev.slice(inputIndex));
                 if (inputIndex === correctPhrase.length) {
                     setCaretStr((prev) => prev.slice(0, inputIndex-1) + "_");
