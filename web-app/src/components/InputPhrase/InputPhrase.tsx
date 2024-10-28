@@ -1,16 +1,21 @@
-"use client"; // Needed this line so useState, and useEffect work
+"use client";
+
 import { InputCursor } from "@/components/InputCursor/InputCursor";
 import { Box, Text } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { forwardRef, useEffect, useImperativeHandle, useState } from "react";
 import { InputPhraseProp } from "./types";
 
-export const InputPhrase: React.FC<InputPhraseProp> = ({ wordLengths }) => {
-  // Note for this code: "\u00A0" is a non-breaking space,
-  //  if you don't use it adding spaces in certain scenarios
-  //  won't do anything as it will collapses the spaces.
-  //  So I needed to use this special space character
-  //  ONLY in place of the characters, not the regular spaces
+// Note for this code: "\u00A0" is a non-breaking space,
+//  if you don't use it adding spaces in certain scenarios
+//  won't do anything as it will collapses the spaces.
+//  So I needed to use this special space character
+//  ONLY in place of the characters, not the regular spaces
+
+export const InputPhrase = forwardRef((props: InputPhraseProp, ref) => {
+  const { wordLengths } = props;
+  const router = useRouter();
+
   const [inputStr, setInputStr] = useState<string>(
     wordLengths
       .split("")
@@ -28,95 +33,115 @@ export const InputPhrase: React.FC<InputPhraseProp> = ({ wordLengths }) => {
         .join("")
   );
   const [isIncomplete, setIsIncomplete] = useState<boolean>(false);
-  const router = useRouter();
 
   const blankPhrase = wordLengths
     .split("")
     .map((char) => (char === " " ? " " : "_"))
     .join("");
 
-  const handleKeyDown = (event: KeyboardEvent) => {
-    console.log("inputIndex: " + inputIndex);
-    const key = event.key.toUpperCase();
+  // Main handler for processing both physical and virtual key presses
+  const processKey = (key: string) => {
     if (
       "QWERTYUIOPASDFGHJKLZXCVBNM".includes(key) &&
       inputIndex < wordLengths.length
     ) {
-      setInputStr(
-        (prev) => prev.slice(0, inputIndex) + key + prev.slice(inputIndex + 1)
+      handleCharacterInput(key);
+    } else if (
+      // since we are custom mapping del to backspace, we'll just take care of both cases
+      (key === "Del" && inputIndex > 0) ||
+      (key === "BACKSPACE" && inputIndex > 0)
+    ) {
+      handleDelete();
+    } else if (key === "Enter" || key === "ENTER") {
+      // left for mobile, right for physical
+      handleEnter();
+    }
+  };
+
+  // Ref method exposed to parent
+  useImperativeHandle(ref, () => ({
+    processKey,
+  }));
+
+  // Handles individual character input and advances cursor
+  const handleCharacterInput = (key: string) => {
+    setInputStr(
+      (prev) => prev.slice(0, inputIndex) + key + prev.slice(inputIndex + 1)
+    );
+
+    if (wordLengths[inputIndex + 1] === " ") {
+      setCaretStr(
+        (prev) =>
+          prev.slice(0, inputIndex) +
+          "\u00A0 " +
+          "_" +
+          prev.slice(inputIndex + 3)
       );
-      if (wordLengths[inputIndex + 1] === " ") {
-        // Next character after the cursor is a space, so add a space automatically
+      setInputIndex((prev) => prev + 2);
+    } else {
+      if (inputIndex === wordLengths.length - 1) {
+        setCaretStr((prev) => prev.slice(0, inputIndex) + "_");
+      } else {
         setCaretStr(
           (prev) =>
             prev.slice(0, inputIndex) +
-            "\u00A0 " +
+            "\u00A0" +
             "_" +
-            prev.slice(inputIndex + 3)
+            prev.slice(inputIndex + 2)
         );
-        setInputIndex((prev) => prev + 2);
-      } else {
-        if (inputIndex === wordLengths.length - 1) {
-          setCaretStr((prev) => prev.slice(0, inputIndex) + "_");
-        } else {
-          setCaretStr(
-            (prev) =>
-              prev.slice(0, inputIndex) +
-              "\u00A0" +
-              "_" +
-              prev.slice(inputIndex + 2)
-          );
-        }
-        setInputIndex((prev) => prev + 1);
       }
-    } else if (key === "BACKSPACE" && inputIndex > 0) {
-      if (inputStr[inputIndex - 1] === " ") {
-        // Previouse character is a space, so automatically delete space
-        setInputStr(
+      setInputIndex((prev) => prev + 1);
+    }
+  };
+
+  const handleDelete = () => {
+    if (inputStr[inputIndex - 1] === " ") {
+      setInputStr(
+        (prev) =>
+          prev.slice(0, inputIndex - 2) + "\u00A0 " + prev.slice(inputIndex)
+      );
+      if (inputIndex === wordLengths.length - 1) {
+        setCaretStr(
           (prev) =>
-            prev.slice(0, inputIndex - 2) + "\u00A0 " + prev.slice(inputIndex)
+            prev.slice(0, inputIndex - 2) +
+            "_ " +
+            "\u00A0 " +
+            prev.slice(inputIndex + 1)
         );
-        if (inputIndex === wordLengths.length - 1) {
-          setCaretStr(
-            (prev) =>
-              prev.slice(0, inputIndex - 2) +
-              "_ " +
-              "\u00A0 " +
-              prev.slice(inputIndex + 1)
-          );
-        } else {
-          setCaretStr(
-            (prev) =>
-              prev.slice(0, inputIndex - 2) +
-              "_ \u00A0" +
-              prev.slice(inputIndex + 1)
-          );
-        }
-        setInputIndex((prev) => prev - 2);
       } else {
-        setInputStr(
+        setCaretStr(
           (prev) =>
-            prev.slice(0, inputIndex - 1) + "\u00A0" + prev.slice(inputIndex)
+            prev.slice(0, inputIndex - 2) +
+            "_ \u00A0" +
+            prev.slice(inputIndex + 1)
         );
-        if (inputIndex === wordLengths.length) {
-          setCaretStr((prev) => prev.slice(0, inputIndex - 1) + "_");
-        } else {
-          setCaretStr(
-            (prev) =>
-              prev.slice(0, inputIndex - 1) +
-              "_" +
-              "\u00A0" +
-              prev.slice(inputIndex + 1)
-          );
-        }
-        setInputIndex((prev) => prev - 1);
       }
-    } else if (key === "ENTER") {
+      setInputIndex((prev) => prev - 2);
+    } else {
+      setInputStr(
+        (prev) =>
+          prev.slice(0, inputIndex - 1) + "\u00A0" + prev.slice(inputIndex)
+      );
       if (inputIndex === wordLengths.length) {
-        validateGuess(inputStr);
+        setCaretStr((prev) => prev.slice(0, inputIndex - 1) + "_");
       } else {
-        flashIncomplete();
+        setCaretStr(
+          (prev) =>
+            prev.slice(0, inputIndex - 1) +
+            "_" +
+            "\u00A0" +
+            prev.slice(inputIndex + 1)
+        );
       }
+      setInputIndex((prev) => prev - 1);
+    }
+  };
+
+  const handleEnter = () => {
+    if (inputIndex === wordLengths.length) {
+      validateGuess(inputStr);
+    } else {
+      flashIncomplete();
     }
   };
 
@@ -124,13 +149,12 @@ export const InputPhrase: React.FC<InputPhraseProp> = ({ wordLengths }) => {
     const response = await fetch("/api/validate-guess", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ guess: userInput.replace(/\u00A0/g, "") }), // Remove non-breaking spaces
+      body: JSON.stringify({ guess: userInput.replace(/\u00A0/g, "") }),
     });
     const data = await response.json();
 
     if (data.correct) {
-      // Store the completion date as the current day in localStorage
-      const completionDate = new Date().toISOString().split("T")[0]; // Store as YYYY-MM-DD
+      const completionDate = new Date().toISOString().split("T")[0];
       localStorage.setItem("gibberleCompletionDate", completionDate);
       router.push("/completed");
     } else {
@@ -143,23 +167,20 @@ export const InputPhrase: React.FC<InputPhraseProp> = ({ wordLengths }) => {
     setTimeout(() => setIsIncomplete(false), 200);
   };
 
-  // Listener for keyboard input
   useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      processKey(event.key.toUpperCase());
+    };
+
     window.addEventListener("keydown", handleKeyDown);
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
   }, [inputIndex, inputStr, wordLengths]);
 
-  // Listiner for checking the input string length
-  // Makes cursor/caret invisible if input string is fully filled out
   useEffect(() => {
-    if (inputIndex === wordLengths.length) {
-      setCursorIsVisible(false);
-    } else {
-      setCursorIsVisible(true);
-    }
-  }, [inputStr, wordLengths]);
+    setCursorIsVisible(inputIndex !== wordLengths.length);
+  }, [inputIndex, wordLengths.length]);
 
   return (
     <Box alignItems="center" justifyContent="center">
@@ -198,4 +219,6 @@ export const InputPhrase: React.FC<InputPhraseProp> = ({ wordLengths }) => {
       </Box>
     </Box>
   );
-};
+});
+
+InputPhrase.displayName = "InputPhrase";

@@ -6,7 +6,7 @@ import { Keyboard } from "@/components/Keyboard/Keyboard";
 import Navbar from "@/components/Navbar/Navbar";
 import { Box, Spinner, Text, VStack } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function Home() {
   const router = useRouter();
@@ -16,6 +16,16 @@ export default function Home() {
     hint: string;
   } | null>(null);
   const [showHint, setShowHint] = useState(false);
+
+  const inputPhraseRef = useRef<{ processKey: (key: string) => void } | null>(
+    null
+  );
+
+  const handleKeyPress = (key: string) => {
+    if (inputPhraseRef.current) {
+      inputPhraseRef.current.processKey(key);
+    }
+  };
 
   useEffect(() => {
     // Check if the user has already completed today's game
@@ -42,15 +52,15 @@ export default function Home() {
     <>
       <Navbar
         onHintClick={handleHintClick}
-        onTutorialClick={function (): void {
-          console.log("This feature has not implemented yet!");
-        }}
-        onStatsClick={function (): void {
-          console.log("This feature has not implemented yet!");
-        }}
-        onSettingsClick={function (): void {
-          console.log("This feature has not implemented yet!");
-        }}
+        onTutorialClick={() =>
+          console.log("This feature has not been implemented yet!")
+        }
+        onStatsClick={() =>
+          console.log("This feature has not been implemented yet!")
+        }
+        onSettingsClick={() =>
+          console.log("This feature has not been implemented yet!")
+        }
       />
       <Box bg="brand.50" maxW="container.xl" mx="auto" px={5} overflow="hidden">
         {!gibberishData ? (
@@ -70,11 +80,19 @@ export default function Home() {
                 Hint: {gibberishData.hint}
               </Text>
             )}
-            <InputPhrase wordLengths={gibberishData.wordLengths} />
+            <InputPhrase
+              ref={inputPhraseRef}
+              wordLengths={gibberishData.wordLengths}
+              handleKeyPress={handleKeyPress}
+            />
           </VStack>
         )}
       </Box>
-      <Keyboard isHidden={false} isDisabled={false} />
+      <Keyboard
+        isHidden={false}
+        isDisabled={false}
+        onKeyPress={handleKeyPress}
+      />
     </>
   );
 }

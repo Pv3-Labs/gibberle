@@ -1,4 +1,5 @@
-"use client"; // Needed this line so useRef, useState, and useEffect worked
+"use client";
+
 import { Key } from "@/components/Key/Key";
 import { KeyboardProp } from "@/components/Keyboard/types";
 import { Box, HStack, useBreakpointValue, VStack } from "@chakra-ui/react";
@@ -8,6 +9,7 @@ export const Keyboard: React.FC<KeyboardProp> = ({
   layout = "qwerty",
   isHidden = false,
   isDisabled = false,
+  onKeyPress,
 }) => {
   // These are just to avoid the eslint errors for deployment
   // Remove later
@@ -22,19 +24,19 @@ export const Keyboard: React.FC<KeyboardProp> = ({
     ["Enter", "Z", "X", "C", "V", "B", "N", "M", "Del"],
   ];
 
-  // set of pressed keys
+  // Set of pressed keys
   const [pressedKeys, setPressedKeys] = useState<Set<string>>(new Set());
-  // hold the latest values of pressedKeys without causing a re-render
+  // Hold the latest values of pressedKeys without causing a re-render
   const pressedKeysRef = useRef(pressedKeys);
 
-  // function that updates the list of pressed keys,
+  // Function that updates the list of pressed keys,
   // also updates the ref to make sure it matches
   const updatePressedKeys = (keys: Set<string>) => {
     setPressedKeys(new Set(keys));
     pressedKeysRef.current = keys;
   };
 
-  // key press event handler
+  // Key press event handler for physical keyboards
   const handleKeyDown = (event: KeyboardEvent) => {
     // Don't want 'Enter' to be all uppercase to make passing it as a prop attribute easier
     let key = event.key === "Enter" ? "Enter" : event.key.toUpperCase();
@@ -47,13 +49,13 @@ export const Keyboard: React.FC<KeyboardProp> = ({
       key === "Del"
     ) {
       const newKeys = new Set(pressedKeysRef.current);
-      // Error handeling?
+      // Error handling?
       newKeys.add(key);
       updatePressedKeys(newKeys);
     }
   };
 
-  // event handler for when a key is released from being pressed
+  // Event handler for when a key is released from being pressed
   const handleKeyUp = (event: KeyboardEvent) => {
     // Don't capitalize 'Enter' because we don't capitalize it on KeyDown handler
     let key = event.key === "Enter" ? "Enter" : event.key.toUpperCase();
@@ -66,10 +68,25 @@ export const Keyboard: React.FC<KeyboardProp> = ({
       key === "Del"
     ) {
       const newKeys = new Set(pressedKeysRef.current);
-      // Error handeling??
+      // Error handling??
       newKeys.delete(key);
       updatePressedKeys(newKeys);
     }
+  };
+
+  // Touch/click event handler for virtual keys (to work on mobile)
+  const handleVirtualKeyPress = (key: string) => {
+    if (onKeyPress) {
+      onKeyPress(key); // Call onKeyPress prop
+    }
+    const newKeys = new Set(pressedKeysRef.current);
+    newKeys.add(key);
+    updatePressedKeys(newKeys);
+
+    setTimeout(() => {
+      newKeys.delete(key);
+      updatePressedKeys(newKeys);
+    }, 150);
   };
 
   useEffect(() => {
@@ -145,6 +162,7 @@ export const Keyboard: React.FC<KeyboardProp> = ({
                   key={keyChar}
                   keyChar={keyChar}
                   isPressed={pressedKeys.has(keyChar)}
+                  onClick={() => handleVirtualKeyPress(keyChar)} // Add onClick handler
                 />
               ))}
             </HStack>
