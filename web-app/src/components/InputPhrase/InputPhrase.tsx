@@ -5,10 +5,21 @@ import { useEffect, useState } from "react";
 import { InputPhraseProp } from "./types";
 
 export const InputPhrase: React.FC<InputPhraseProp> = ({correctPhrase}) => {
+    // Note for this code: "\u00A0" is a non-breaking space, 
+    //  if you don't use it adding spaces in certain scenarios
+    //  won't do anything as it will collapses the spaces.
+    //  So I needed to use this special space character 
+    //  ONLY in place of the characters, not the regualr spaces
     const [inputStr, setInputStr] = useState<string>("");
     const [inputIndex, setInputIndex] = useState<number>(0);
     const [cursorIsVisible, setCursorIsVisible] = useState<boolean>(true);
-    const [caretStr, setCaretStr] = useState<string>("_");
+    const [caretStr, setCaretStr] = useState<string>("_" + 
+        correctPhrase
+            .slice(1)
+            .split("")
+            .map((char) => (char === " " ? " " : "\u00A0"))
+            .join("")
+    );
 
     const blankPhrase = correctPhrase
         .split("")
@@ -16,30 +27,39 @@ export const InputPhrase: React.FC<InputPhraseProp> = ({correctPhrase}) => {
         .join("");
     
     const handleKeyDown = (event: KeyboardEvent) => {
-        // NOTE: "\u00A0" is a non-breaking space, if you just do " ",
-        // it collapses the spaces so need to use it 
-        //  when adding spaces to inputStr and caretStr
         const key = event.key.toUpperCase();
         if ("QWERTYUIOPASDFGHJKLZXCVBNM".includes(key) && (inputStr.length < correctPhrase.length)) {
             if (correctPhrase[inputIndex + 1] === " ") {
                 // Next character after the cursor is a space, so add a space automatically
                 setInputStr((prev) => prev + key + " ");
-                setCaretStr((prev) => "\u00A0" + "\u00A0" + prev);
+                setCaretStr((prev) => prev.slice(0, inputIndex) + "\u00A0 " + "_" + prev.slice(inputIndex + 3));
                 setInputIndex((prev) => prev + 2);
             } else {
                 setInputStr((prev) => prev + key);
-                setCaretStr((prev) => "\u00A0" + prev);
+                if (inputIndex === correctPhrase.length - 1) {
+                    setCaretStr((prev) => prev.slice(0, inputIndex) + "_");
+                } else {
+                    setCaretStr((prev) => prev.slice(0, inputIndex) + "\u00A0" + "_" + prev.slice(inputIndex + 2));
+                }
                 setInputIndex((prev) => prev + 1);
             }
         } else if (key === "BACKSPACE" && (inputStr.length > 0)) {
             if (inputStr[inputIndex - 1] === " ") {
                 // previouse character is a space, so automatically delete space
                 setInputStr((prev) => prev.slice(0, -2));
-                setCaretStr((prev) => prev.slice(2));
+                if (inputIndex === correctPhrase.length - 1) {
+                    setCaretStr((prev) => prev.slice(0, inputIndex-2) + "_ " + "\u00A0 " + prev.slice(inputIndex + 1));
+                } else {
+                    setCaretStr((prev) => prev.slice(0, inputIndex-2) + "_" + "\u00A0 " + prev.slice(inputIndex + 1));
+                }
                 setInputIndex((prev) => prev - 2);
             } else {
                 setInputStr((prev) => prev.slice(0, -1));
-                setCaretStr((prev) => prev.slice(1));
+                if (inputIndex === correctPhrase.length) {
+                    setCaretStr((prev) => prev.slice(0, inputIndex-1) + "_");
+                } else {
+                    setCaretStr((prev) => prev.slice(0, inputIndex-1) + "_" + "\u00A0" + prev.slice(inputIndex + 1));
+                }
                 setInputIndex((prev) => prev - 1);
             }
         }
