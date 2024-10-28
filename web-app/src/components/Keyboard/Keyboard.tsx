@@ -129,7 +129,7 @@ export const Keyboard: React.FC<KeyboardProp> = ({
       <Box
         w={containerWidth}
         h={containerHeight}
-        borderRadius={"36px"}
+        borderRadius="2xl"
         // background={`linear-gradient(rgba(0, 0, 0, 0.33), rgba(0, 0, 0, 0.33)), #A199CA`}
         background={`transparent`}
         backgroundBlendMode="multiply"

@@ -1,3 +1,3 @@
 export interface InputPhraseProp {
-    correctPhrase: string;
+  wordLengths: string;
 }

@@ -18,7 +18,7 @@ export const Key: React.FC<KeyProp> = ({ keyChar, isPressed = false }) => {
 
   return (
     <Button
-      bg="#1C1C1C"
+      bg="#292929"
       w={specialChar ? "5.5vw" : "4.5vw"}
       h={keyHeight}
       minW="32px" // Prevent keys from becoming too small

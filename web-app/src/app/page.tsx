@@ -1,30 +1,42 @@
 "use client";
 
+import GibberishPhrase from "@/components/GibberishPhrase/GibberishPhrase";
 import { InputPhrase } from "@/components/InputPhrase/InputPhrase";
 import { Keyboard } from "@/components/Keyboard/Keyboard";
-import { Box, Heading } from "@chakra-ui/react";
+import Navbar from "@/components/Navbar/Navbar";
+import { Box, VStack } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 
 export default function Home() {
+  const [gibberishData, setGibberishData] = useState<{
+    phrase: string;
+    wordLengths: string;
+  } | null>(null);
+
+  useEffect(() => {
+    const fetchGibberishData = async () => {
+      const response = await fetch("/api/get-gibberish");
+      const data = await response.json();
+      setGibberishData(data);
+    };
+
+    fetchGibberishData();
+  }, []);
+
+  if (!gibberishData) {
+    return <p>Loading...</p>; // Loading state while data is fetched
+  }
+
   return (
-    <Box
-      display="flex"
-      flexDirection="column"
-      alignItems="center" // Center horizontally
-      minHeight="100vh" // Take full viewport height
-    >
-      <Heading
-        size={{ base: "xl", md: "2xl", lg: "3xl", xl: "4xl" }}
-        p={5}
-        textAlign={"center"}
-        mb={5}
-        mt={{ base: "none", md: "30" }}
-      >
-        Gibberle
-      </Heading>
-      <Keyboard isHidden={false} isDisabled={true} />
-      <Box marginY={5}>
-        <InputPhrase correctPhrase="never gonna give you up" />
+    <>
+      <Navbar />
+      <Box bg="brand.50" maxW="container.xl" mx="auto" px={5} overflow="hidden">
+        <VStack align="center" w="full">
+          <GibberishPhrase phrase={gibberishData.phrase} />
+          <InputPhrase wordLengths={gibberishData.wordLengths} />{" "}
+        </VStack>
       </Box>
-    </Box>
+      <Keyboard isHidden={false} isDisabled={false} />
+    </>
   );
 }
