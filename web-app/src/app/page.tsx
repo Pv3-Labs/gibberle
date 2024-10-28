@@ -1,10 +1,16 @@
 'use client'
-
+        
+import { InputPhrase } from "@/components/InputPhrase/InputPhrase";
 import { Box, Heading } from "@chakra-ui/react";
 
 export default function Home() {
   return (
-    <Box bg="brand.50" maxW="container.xl" mx="auto" px={5}>
+    <Box
+      display="flex"
+      flexDirection="column"
+      alignItems="center" // Center horizontally
+      minHeight="100vh" // Take full viewport height
+    >
       <Heading
         size={{ base: "xl", md: "2xl", lg: "3xl", xl: "4xl" }}
         p={5}
@@ -14,6 +20,9 @@ export default function Home() {
       >
         Gibberle
       </Heading>
+      <Box marginY={5}>
+        <InputPhrase correctPhrase="never gonna give you up" />
+      </Box>
     </Box>
   );
 }
