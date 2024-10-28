@@ -7,6 +7,7 @@ export const Key: React.FC<KeyProp> = ({keyChar, keyWidth, isPressed=false}) => 
   //  instead of a width attribute? Or something lke it?
   //  - this would make it so we have don't have to set the width
   const displayChar = keyChar === "Enter" ? "Ent" : keyChar;
+  const specialChar = ((keyChar === "Enter") || (keyChar === "Del")) ? true : false;
 
   const keyHeight = useBreakpointValue({
     base: "7vh",
@@ -18,7 +19,7 @@ export const Key: React.FC<KeyProp> = ({keyChar, keyWidth, isPressed=false}) => 
   return (
     <Button 
       bg='#1C1C1C'
-      w={keyChar === "Enter" ? "5.5vw" : "4.5vw"}
+      w={specialChar ? "5.5vw" : "4.5vw"}
       h={keyHeight}
       minW="32px" // Prevent keys from becoming too small
       minH="32px"

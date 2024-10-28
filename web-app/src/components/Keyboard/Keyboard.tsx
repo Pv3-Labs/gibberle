@@ -13,7 +13,7 @@ export const Keyboard: React.FC<KeyboardProp> = ({
   const qwertyKeyboard = [
     ["Q", "W", "E", "R", "T", "Y", "U", "I", "O", "P"],
     ["A", "S", "D", "F", "G", "H", "J", "K", "L"],
-    ["Z", "X", "C", "V", "B", "N", "M", "Enter"],
+    ["Enter", "Z", "X", "C", "V", "B", "N", "M", "Del"]
   ];
 
   // set of pressed keys
@@ -31,8 +31,11 @@ export const Keyboard: React.FC<KeyboardProp> = ({
   // key press event handler
   const handleKeyDown = (event: KeyboardEvent) => {
     // Don't want 'Enter' to be all uppercase to make passing it as a prop attribute easier
-    const key = event.key === "Enter" ? "Enter" : event.key.toUpperCase();
-    if ("QWERTYUIOPASDFGHJKLZXCVBNM".includes(key) || key === "Enter") {
+    let key = event.key === "Enter" ? "Enter" : event.key.toUpperCase();
+    if (key === "BACKSPACE") {
+      key = "Del";
+    }
+    if ("QWERTYUIOPASDFGHJKLZXCVBNM".includes(key) || key === "Enter" || key === "Del") {
       const newKeys = new Set(pressedKeysRef.current);
       // Error handeling?
       newKeys.add(key);
@@ -43,8 +46,11 @@ export const Keyboard: React.FC<KeyboardProp> = ({
   // event handler for when a key is released from being pressed
   const handleKeyUp = (event: KeyboardEvent) => {
     // Don't capitalize 'Enter' because we don't capitalize it on KeyDown handler
-    const key = event.key === "Enter" ? "Enter" : event.key.toUpperCase();
-    if ("QWERTYUIOPASDFGHJKLZXCVBNM".includes(key) || key === "Enter") {
+    let key = event.key === "Enter" ? "Enter" : event.key.toUpperCase();
+    if (key === "BACKSPACE") {
+      key = "Del";
+    }
+    if ("QWERTYUIOPASDFGHJKLZXCVBNM".includes(key) || key === "Enter" || key === "Del") {
       const newKeys = new Set(pressedKeysRef.current);
       // Error handeling??
       newKeys.delete(key);
