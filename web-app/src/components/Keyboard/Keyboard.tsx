@@ -98,7 +98,7 @@ export const Keyboard: React.FC<KeyboardProp> = ({
       updatedKeys.delete(key);
       updatePressedKeys(updatedKeys);
       keyTimeouts.current.delete(key); // Remove timeout from map after it's executed
-    }, 120);
+    }, 50);
 
     keyTimeouts.current.set(key, timeoutId); // Store the new timeout for this key
   };
