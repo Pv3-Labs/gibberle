@@ -3,7 +3,6 @@
 import { Box, Heading } from "@chakra-ui/react";
 
 export default function Home() {
-
   return (
     <Box bg="brand.50" maxW="container.xl" mx="auto" px={5}>
       <Heading
