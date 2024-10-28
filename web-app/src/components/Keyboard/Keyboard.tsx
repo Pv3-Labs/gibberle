@@ -150,9 +150,9 @@ export const Keyboard: React.FC<KeyboardProp> = ({
   return (
     <Box
       position="fixed"
-      bottom={bottomSpacing}
-      left="50%"
-      transform="translateX(-50%)"
+      bottom={0}
+      // left="50%"
+      // transform="translateX(-50%)"
       width="100%"
       display="flex"
       justifyContent="center"

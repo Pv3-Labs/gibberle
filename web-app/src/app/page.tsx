@@ -49,7 +49,7 @@ export default function Home() {
   const handleHintClick = () => setShowHint((prev) => !prev);
 
   return (
-    <>
+    <Box height="100vh">
       <Navbar
         onHintClick={handleHintClick}
         onTutorialClick={() =>
@@ -64,11 +64,11 @@ export default function Home() {
       />
       <Box bg="brand.50" maxW="container.xl" mx="auto" px={5} overflow="hidden">
         {!gibberishData ? (
-          <VStack align="center" w="full">
+          <VStack align="center" w="full" mb={10}>
             <Spinner my={20} />
           </VStack>
         ) : (
-          <VStack align="center" w="full">
+          <VStack align="center" w="full" mb={10}>
             <GibberishPhrase phrase={gibberishData.phrase} />
             {showHint && (
               <Text
@@ -93,6 +93,6 @@ export default function Home() {
         isDisabled={false}
         onKeyPress={handleKeyPress}
       />
-    </>
+    </Box>
   );
 }
