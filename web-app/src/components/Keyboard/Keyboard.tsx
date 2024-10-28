@@ -86,7 +86,7 @@ export const Keyboard: React.FC<KeyboardProp> = ({
     setTimeout(() => {
       newKeys.delete(key);
       updatePressedKeys(newKeys);
-    }, 150);
+    }, 120);
   };
 
   useEffect(() => {
