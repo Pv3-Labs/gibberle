@@ -140,12 +140,12 @@ export const Keyboard: React.FC<KeyboardProp> = ({
     md: "1vh",
   });
 
-  const bottomSpacing = useBreakpointValue({
-    base: "0",
-    sm: "1.5vh",
-    md: "2vh",
-    lg: "2vh",
-  });
+  // const bottomSpacing = useBreakpointValue({
+  //   base: "0",
+  //   sm: "1.5vh",
+  //   md: "2vh",
+  //   lg: "2vh",
+  // });
 
   return (
     <Box
