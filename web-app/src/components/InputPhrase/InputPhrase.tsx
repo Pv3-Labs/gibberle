@@ -149,7 +149,9 @@ export const InputPhrase = forwardRef((props: InputPhraseProp, ref) => {
     const response = await fetch("/api/validate-guess", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ guess: userInput.replace(/\u00A0/g, "") }),
+      body: JSON.stringify({
+        guess: userInput.replace(/\u00A0/g, "").toLowerCase(),
+      }),
     });
     const data = await response.json();
 
