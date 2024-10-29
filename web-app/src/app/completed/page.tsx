@@ -18,7 +18,7 @@ export default function Completed() {
 
     // Check timestamp
     const completionDate = localStorage.getItem("gibberleCompletionDate");
-    const today = new Date().toISOString().split("T")[0];
+    const today = new Date().toLocaleDateString("en-CA");
 
     if (completionDate !== today) {
       router.push("/");

@@ -32,7 +32,7 @@ export default function Home() {
     const completionDate = localStorage.getItem("gibberleCompletionDate");
     const today = new Date().toLocaleDateString("en-CA");
 
-    console.log(today);
+    // console.log(today);
 
     if (completionDate === today) {
       router.push("/completed"); // Redirect if game already completed
