@@ -30,7 +30,9 @@ export default function Home() {
   useEffect(() => {
     // Check if the user has already completed today's game
     const completionDate = localStorage.getItem("gibberleCompletionDate");
-    const today = new Date().toISOString().split("T")[0];
+    const today = new Date().toLocaleDateString("en-CA");
+
+    console.log(today);
 
     if (completionDate === today) {
       router.push("/completed"); // Redirect if game already completed
