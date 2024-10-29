@@ -156,7 +156,7 @@ export const InputPhrase = forwardRef((props: InputPhraseProp, ref) => {
     const data = await response.json();
 
     if (data.correct) {
-      const completionDate = new Date().toISOString().split("T")[0];
+      const completionDate = new Date().toLocaleDateString("en-CA");
       localStorage.setItem("gibberleCompletionDate", completionDate);
       router.push("/completed");
     } else {
