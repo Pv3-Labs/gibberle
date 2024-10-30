@@ -146,11 +146,13 @@ export const InputPhrase = forwardRef((props: InputPhraseProp, ref) => {
   };
 
   const validateGuess = async (userInput: string) => {
-    const response = await fetch("/api/validate-guess", {
+    const today = new Date().toLocaleDateString("en-CA");
+    const response = await fetch(`/api/validate-guess`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         guess: userInput.replace(/\u00A0/g, "").toLowerCase(),
+        date: today,
       }),
     });
     const data = await response.json();
