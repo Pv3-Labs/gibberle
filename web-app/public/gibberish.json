@@ -1,50 +1,128 @@
 [
   {
-    "phrase": "May the Force be with you",
-    "phonetic": "M EY1   DH IY1   F AO1 R S   B IY1   W IH1 TH   OY0",
-    "hint": "Star Wars",
-    "gibberish": "EIE IEEE EFOORS BEE WHIT HOI"
+    "phrase": "I am inevitable",
+    "phonetic": "IY1   AE1 M   IH2 N EH1 V AH0 T AH0 B AH0 L",
+    "hint": "Avengers: Endgame",
+    "gibberish": "IY AEM INEHVATUHBL"
   },
   {
-    "phrase": "Life is like a box of chocolates",
-    "phonetic": "L AY1 F   IH1 S   L AY1 K   AE1   B AA1 K S   OW1 F   CH AO1 K L AH0 T S",
-    "hint": "Forrest Gump",
-    "gibberish": "IIPH YS LIGH CA BAKS OF CHAWQLATS"
+    "phrase": "Wakanda forever",
+    "phonetic": "W AH0 K AE1 N D AH0   F AO1 R V ER0",
+    "hint": "Black Panther",
+    "gibberish": "WAKONDEH FURVAH"
   },
   {
-    "phrase": "Just keep swimming",
-    "phonetic": "JH AH1 S T   IY1 P   S W IH1 M IH0 NG",
-    "hint": "Finding Nemo",
-    "gibberish": "GUHST EAPC WHYMYNG"
+    "phrase": "I solemnly swear that I am up to no good",
+    "phonetic": "IY1   S AH0 L EH1 M N IY0   S W EH1 R   TH AH1 T   IY1   AE1 M   AH1 P   T OW1   N OW1   G UH1 D",
+    "hint": "Harry Potter",
+    "gibberish": "AY SULMNEE SWAHR THEHT AY EHM OOP TUH NAH GUHD"
   },
   {
-    "phrase": "Winter is coming",
-    "phonetic": "W IH1 N T ER0   IH1 S   K OW1 M IH0 NG",
+    "phrase": "With great power comes great responsibility",
+    "phonetic": "W IH1 TH   G R EY1 T   P AW1 ER0   K AH1 M Z   G R EY1 T   R IY0 S P AA2 N S AH0 B IH1 L IH0 T IY0",
+    "hint": "Spider-Man",
+    "gibberish": "WIHT GRAYT POWAHR KUHMZ GRAYT RAHSPUNSBILITEH"
+  },
+  {
+    "phrase": "I drink and I know things",
+    "phonetic": "IY1   D R IH1 NG K   AE1 N D   IY1   N AW1   TH IH1 NG Z",
     "hint": "Game of Thrones",
-    "gibberish": "WHINTUR IS QOMYNG"
+    "gibberish": "IY DRIHNK AEND IY NOW THIHNGZ"
   },
   {
-    "phrase": "Why so serious",
-    "phonetic": "W AY1   S OW1   S IH1 R IY0 AH0 S",
-    "hint": "The Dark Knight",
-    "gibberish": "WY SOW CIRIAS"
+    "phrase": "Why is the rum always gone",
+    "phonetic": "W AY1   IH1 S   DH IY1   R AH1 M   AO1 L W EY2 Z   N OW1 N",
+    "hint": "Pirates of the Caribbean",
+    "gibberish": "WHY IS DHIY RUHM AALWEYZ GOWN"
   },
   {
-    "phrase": "Live long and prosper",
-    "phonetic": "L AY1 V   L AO1 NG   AE1 N D   P R AA1 S P ER0",
-    "hint": "Star Trek",
-    "gibberish": "IGHIGHV LAUN AND PRAHSPER"
+    "phrase": "I am Groot",
+    "phonetic": "IY1   AE1 M   G R UW1 T",
+    "hint": "Guardians of the Galaxy",
+    "gibberish": "IY AEM GROWT"
   },
   {
-    "phrase": "Say hello to my little friend",
-    "phonetic": "S EY1   HH EH1 L OW0   T OW1   M AY1   L IH1 T AH0 L   F R EH1 N D",
-    "hint": "Scarface",
-    "gibberish": "AH HELO TOW MI IITAL PHRAIND"
+    "phrase": "This is the way",
+    "phonetic": "DH IH1 S   IH1 S   DH IY1   W EY1",
+    "hint": "The Mandalorian",
+    "gibberish": "DHIS IS DHIY WEY"
   },
   {
-    "phrase": "You shall not pass",
-    "phonetic": "OY0   SH AO1 L   N AA1 T   P AE1 S",
+    "phrase": "I volunteer as tribute",
+    "phonetic": "IY1   V AA2 L AH0 N T IH1 R   AE1 S   T R IH1 B Y UW0 T",
+    "hint": "The Hunger Games",
+    "gibberish": "IY VAALUHNTIHR AESS TRIHBYUWT"
+  },
+  {
+    "phrase": "I see dead people",
+    "phonetic": "IY1   S IY1   D EH1 D   P IY1 P AH0 L",
+    "hint": "The Sixth Sense",
+    "gibberish": "IY SEE DEHD PEEPUHL"
+  },
+  {
+    "phrase": "One ring to rule them all",
+    "phonetic": "W AH1 N   R IH1 NG   T OW1   R UW1 L   DH EH1 M   AO1 L",
     "hint": "The Lord of the Rings",
-    "gibberish": "OY SHAUL NAHT PAC"
+    "gibberish": "WUHN RIHNG TO RUWL DHEHM AWL"
+  },
+  {
+    "phrase": "I love the smell of napalm in the morning",
+    "phonetic": "IY1   L AH1 V   DH IY1   S M EH1 L   OW1 F   N EY1 P AA0 M   IH1 N   DH IY1   M AO1 R N IH0 NG",
+    "hint": "Apocalypse Now",
+    "gibberish": "IY LUHV DHIY SMEHL OWF NEYPAHM IN DHIY MAWRNIHNG"
+  },
+  {
+    "phrase": "Say what again",
+    "phonetic": "S EY1   W AH1 T   AH0 G EY1 N",
+    "hint": "Pulp Fiction",
+    "gibberish": "SAY WUHT UHGEYN"
+  },
+  {
+    "phrase": "I want to play a game",
+    "phonetic": "IY1   W AA1 N T   T OW1   P L EY1   AE1   G EY1 M",
+    "hint": "Saw",
+    "gibberish": "IY WAHNT TO PLEY A GEYM"
+  },
+  {
+    "phrase": "My precious",
+    "phonetic": "M AY1   P R EY1 SH AH0 S",
+    "hint": "The Lord of the Rings",
+    "gibberish": "MAI PREYSHUHS"
+  },
+  {
+    "phrase": "I have a bad feeling about this",
+    "phonetic": "IY1   HH EY1 V   AE1   B AE1 D   F IY1 L IH0 NG   AH0 B AW1 T   DH IH1 S",
+    "hint": "Star Wars",
+    "gibberish": "AY HAIV AH BAEHD FIHLING UHBAWT THIHS"
+  },
+  {
+    "phrase": "To the Batmobile",
+    "phonetic": "T OW1   DH IY1   B AE1 T M OW0 B IY2 L",
+    "hint": "Batman",
+    "gibberish": "OU DHIY BAMOHBEEL"
+  },
+  {
+    "phrase": "Nobody puts Baby in a corner",
+    "phonetic": "N OW1 B AH0 D IY0   P AH1 T S   B EY1 B IY0   IH1 N   AE1   K AO1 R N ER0",
+    "hint": "Dirty Dancing",
+    "gibberish": "NOHBUHDEE PUHTS BEYBEE IN A KAWRNUR"
+  },
+  {
+    "phrase": "Manners maketh man",
+    "phonetic": "M AE1 N ER0 Z   M AE1 K IH0 TH   M AA1 N",
+    "hint": "Kingsman: The Secret Service",
+    "gibberish": "MAENERZ MAEKITH MAAN"
+  },
+  {
+    "phrase": "You talking to me",
+    "phonetic": "Y UW1   T AO1 K IH0 NG   T OW1   M IY1",
+    "hint": "Taxi Driver",
+    "gibberish": "YUW TAWKIHNG TO MEE"
+  },
+  {
+    "phrase": "I wish I knew how to quit you",
+    "phonetic": "IY1   W IH1 SH   IY1   N UW1   HH AW1   T OW1   K W IY1 T   Y UW1",
+    "hint": "Brokeback Mountain",
+    "gibberish": "IY WIHSH IY NUW HOW TO KWIHT YUW"
   }
 ]

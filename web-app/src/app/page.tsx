@@ -40,6 +40,7 @@ export default function Home() {
     }
 
     const fetchGibberishData = async () => {
+      console.log(`/api/get-gibberish?date=${today}`);
       const response = await fetch(`/api/get-gibberish?date=${today}`);
       const data = await response.json();
       setGibberishData(data);
