@@ -114,3 +114,6 @@ venv.bak/
 
 # Pyre type checker
 .pyre/
+
+# Phonetic output
+gibberish-generation/phonetic_output.json

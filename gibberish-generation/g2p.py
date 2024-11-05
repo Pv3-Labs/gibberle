@@ -15,9 +15,6 @@ import torch.nn.functional as F  # For additional functions like softmax
 # Load the English language model from spaCy for tokenization
 nlp = spacy.load('en_core_web_sm')
 
-# Get the directory name of the current file for relative path handling
-dirname = os.path.dirname(__file__)
-
 class G2P(nn.Module):
     """
     Grapheme-to-Phoneme (G2P) Model using an encoder-decoder architecture with attention.
