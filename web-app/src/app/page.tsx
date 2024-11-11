@@ -1,7 +1,6 @@
+"use client";
 import { Box, Heading, Spinner, Text, VStack } from "@chakra-ui/react";
 import Link from "next/link";
-"use client";
-
 import GibberishPhrase from "@/components/GibberishPhrase/GibberishPhrase";
 import { InputPhrase } from "@/components/InputPhrase/InputPhrase";
 import { Keyboard } from "@/components/Keyboard/Keyboard";
