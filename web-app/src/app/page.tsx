@@ -1,10 +1,9 @@
 "use client";
-import { Box, Heading, Spinner, Text, VStack } from "@chakra-ui/react";
-import Link from "next/link";
 import GibberishPhrase from "@/components/GibberishPhrase/GibberishPhrase";
 import { InputPhrase } from "@/components/InputPhrase/InputPhrase";
 import { Keyboard } from "@/components/Keyboard/Keyboard";
 import Navbar from "@/components/Navbar/Navbar";
+import { Box, Spinner, Text, VStack } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
@@ -52,61 +51,50 @@ export default function Home() {
   const handleHintClick = () => setShowHint((prev) => !prev);
 
   return (
-    <Box bg="brand.50" maxW="container.xl" mx="auto" px={5}>
-      <Heading
-        size={{ base: "xl", md: "2xl", lg: "3xl", xl: "4xl" }}
-        p={5}
-        textAlign={"center"}
-        mb={5}
-        mt={{ base: "none", md: "30" }}
-      >
-        <Link href="/dev/sandbox">Gibberle</Link>
-      </Heading>
-      <Box height="100vh">
-        <Navbar
-          onHintClick={handleHintClick}
-          onTutorialClick={() =>
-            console.log("This feature has not been implemented yet!")
-          }
-          onStatsClick={() =>
-            console.log("This feature has not been implemented yet!")
-          }
-          onSettingsClick={() =>
-            console.log("This feature has not been implemented yet!")
-          }
-        />
-        <Box bg="brand.50" maxW="container.xl" mx="auto" px={5} overflow="hidden">
-          {!gibberishData ? (
-            <VStack align="center" w="full" mb={10}>
-              <Spinner my={20} />
-            </VStack>
-          ) : (
-            <VStack align="center" w="full" mb={10}>
-              <GibberishPhrase phrase={gibberishData.phrase} />
-              {showHint && (
-                <Text
-                  fontSize={{ base: "md", md: "lg", lg: "xl" }}
-                  textAlign="center"
-                  color="#b9b9b9"
-                  mb={3}
-                >
-                  Hint: {gibberishData.hint}
-                </Text>
-              )}
-              <InputPhrase
-                ref={inputPhraseRef}
-                wordLengths={gibberishData.wordLengths}
-                handleKeyPress={handleKeyPress}
-              />
-            </VStack>
-          )}
-        </Box>
-        <Keyboard
-          isHidden={false}
-          isDisabled={false}
-          onKeyPress={handleKeyPress}
-        />
+    <Box height="100vh">
+      <Navbar
+        onHintClick={handleHintClick}
+        onTutorialClick={() =>
+          console.log("This feature has not been implemented yet!")
+        }
+        onStatsClick={() =>
+          console.log("This feature has not been implemented yet!")
+        }
+        onSettingsClick={() =>
+          console.log("This feature has not been implemented yet!")
+        }
+      />
+      <Box bg="brand.50" maxW="container.xl" mx="auto" px={5} overflow="hidden">
+        {!gibberishData ? (
+          <VStack align="center" w="full" mb={10}>
+            <Spinner my={20} />
+          </VStack>
+        ) : (
+          <VStack align="center" w="full" mb={10}>
+            <GibberishPhrase phrase={gibberishData.phrase} />
+            {showHint && (
+              <Text
+                fontSize={{ base: "md", md: "lg", lg: "xl" }}
+                textAlign="center"
+                color="#b9b9b9"
+                mb={3}
+              >
+                Hint: {gibberishData.hint}
+              </Text>
+            )}
+            <InputPhrase
+              ref={inputPhraseRef}
+              wordLengths={gibberishData.wordLengths}
+              handleKeyPress={handleKeyPress}
+            />
+          </VStack>
+        )}
       </Box>
+      <Keyboard
+        isHidden={false}
+        isDisabled={false}
+        onKeyPress={handleKeyPress}
+      />
     </Box>
   );
 }
