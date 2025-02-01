@@ -168,6 +168,9 @@ export const InputPhrase = forwardRef((props: InputPhraseProp, ref) => {
       if (lastWon === yesterday) {
         localStorage.setItem("gibberleCurrentStreak", String(currentStreak + 1));
       }
+      else {
+        localStorage.setItem("gibberleCurrentStreak", "1");
+      }
       if (currentStreak + 1 > bestStreak) {
         localStorage.setItem("gibberleBestStreak", String(currentStreak + 1));
       }
