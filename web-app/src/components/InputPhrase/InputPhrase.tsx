@@ -158,7 +158,20 @@ export const InputPhrase = forwardRef((props: InputPhraseProp, ref) => {
     const data = await response.json();
 
     if (data.correct) {
+      const lastWon = localStorage.getItem("gibberleCompletionDate");
+      const currentStreak = Number(localStorage.getItem("gibberleCurrentStreak") || 0)
+      const bestStreak = Number(localStorage.getItem("gibberleBestStreak") || 0);
+      const gamesWon = Number(localStorage.getItem("gibberleGamesWon") || 0) + 1;
+      
       const completionDate = new Date().toLocaleDateString("en-CA");
+      const yesterday = new Date(Date.now() - 864e5).toLocaleDateString("en-CA");
+      if (lastWon === yesterday) {
+        localStorage.setItem("gibberleCurrentStreak", String(currentStreak + 1));
+      }
+      if (currentStreak + 1 > bestStreak) {
+        localStorage.setItem("gibberleBestStreak", String(currentStreak + 1));
+      }
+      localStorage.setItem("gibberleGamesWon", String(gamesWon + 1));
       localStorage.setItem("gibberleCompletionDate", completionDate);
       router.push("/completed");
     } else {

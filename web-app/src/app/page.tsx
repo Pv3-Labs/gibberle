@@ -57,9 +57,14 @@ export default function Home() {
         onTutorialClick={() =>
           console.log("This feature has not been implemented yet!")
         }
-        onStatsClick={() =>
-          console.log("This feature has not been implemented yet!")
-        }
+        onStatsClick={() => {
+          const currentStreak = localStorage.getItem("gibberleCurrentStreak") || 0;
+          const bestStreak = localStorage.getItem("gibberleBestStreak") || 0;
+          const gamesWon = localStorage.getItem("gibberleGamesWon") || 0;
+          console.log(`Current Streak: ${currentStreak}`);
+          console.log(`Best Streak: ${bestStreak}`);
+          console.log(`Games Won: ${gamesWon}`); //TODO: Ethan do some wizardry or something
+        }}
         onSettingsClick={() =>
           console.log("This feature has not been implemented yet!")
         }
