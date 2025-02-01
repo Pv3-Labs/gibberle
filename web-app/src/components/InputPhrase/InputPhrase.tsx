@@ -174,7 +174,7 @@ export const InputPhrase = forwardRef((props: InputPhraseProp, ref) => {
       if (currentStreak + 1 > bestStreak) {
         localStorage.setItem("gibberleBestStreak", String(currentStreak + 1));
       }
-      localStorage.setItem("gibberleGamesWon", String(gamesWon + 1));
+      localStorage.setItem("gibberleGamesWon", String(gamesWon));
       localStorage.setItem("gibberleCompletionDate", completionDate);
       router.push("/completed");
     } else {
